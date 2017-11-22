@@ -37,8 +37,5 @@ public class SplashActivity extends BaseActivity {
         RxHelper.countdown(5);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+
 }

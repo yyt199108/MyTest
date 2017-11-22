@@ -29,7 +29,7 @@ public class HomeFragment extends BaseFragment {
 
     List<Fragment> fragments = new ArrayList<Fragment>();
 
-    private String[] mTitles = {getString(R.string.menu_pic), "2", "3", "4"};
+    private String[] mTitles = {"1", "2", "3", "4"};
 
     private int[] mIconUnselectIds = {
             R.mipmap.ic_launcher, R.mipmap.ic_launcher,
@@ -65,9 +65,9 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
+        initHomeFragmentList();
         initTabLayout();
         initViewPager();
-        initHomeFragmentList();
     }
 
 

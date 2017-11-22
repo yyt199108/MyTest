@@ -39,7 +39,7 @@ public abstract class BaseFragment<T extends IBasePresenter> extends SupportFrag
 
     @Nullable
     @BindView(R.id.empty_layout)
-    EmptyLayout mEmptyLayout;
+    protected EmptyLayout mEmptyLayout;
     @Nullable
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
@@ -97,6 +97,12 @@ public abstract class BaseFragment<T extends IBasePresenter> extends SupportFrag
             parent.removeView(mRootView);
         }
         return mRootView;
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        updateViews(false);
     }
 
     /**
