@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MyTest</string>
+    <string name="menu_pic">图集</string>
 </resources>
