@@ -19,6 +19,8 @@ import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.android.FragmentEvent;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.yokeyword.fragmentation.SupportFragment;
@@ -29,7 +31,7 @@ import rx.subjects.BehaviorSubject;
  * Created by admin on 2017-11-22.
  */
 
-public abstract class BaseFragment extends SupportFragment implements LifecycleProvider<FragmentEvent> {
+public abstract class BaseFragment<T extends IBasePresenter> extends SupportFragment implements LifecycleProvider<FragmentEvent> {
 
     protected Context mContext;
     //缓存Fragment view
@@ -41,6 +43,9 @@ public abstract class BaseFragment extends SupportFragment implements LifecycleP
     @Nullable
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
+
+    @Inject
+    protected T mPresenter;
 
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
     @Override

@@ -57,4 +57,19 @@ dependencies {
 
     //tablayout
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+
+    //recyclerview-animators
+    compile 'jp.wasabeef:recyclerview-animators:2.2.7'
+
+    //retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.okhttp3:okhttp:3.3.1'
+    compile 'com.squareup.okio:okio:1.7.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.github.zhaokaiqiang.klog:library:1.4.0'
+
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.2.7'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
 }

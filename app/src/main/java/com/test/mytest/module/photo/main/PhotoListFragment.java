@@ -2,13 +2,18 @@ package com.test.mytest.module.photo.main;
 
 import android.os.Bundle;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.test.mytest.R;
 import com.test.mytest.module.base.BaseFragment;
+import com.test.mytest.module.base.IBasePresenter;
+
+import javax.inject.Inject;
 
 /**
  * Created by admin on 2017-11-22.
  */
 
-public class PhotoListFragment extends BaseFragment {
+public class PhotoListFragment extends BaseFragment<IBasePresenter> {
 
     public static PhotoListFragment newInstance() {
         PhotoListFragment fragment = new PhotoListFragment();
@@ -17,9 +22,12 @@ public class PhotoListFragment extends BaseFragment {
         return fragment;
     }
 
+    @Inject
+    BaseQuickAdapter mAdapter;
+
     @Override
     protected int attachLayoutRes() {
-        return 0;
+        return R.layout.fragment_photo_list;
     }
 
     @Override
