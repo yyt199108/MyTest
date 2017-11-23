@@ -3,7 +3,6 @@ package com.test.mytest.module.home;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 
 
 import com.flyco.tablayout.CommonTabLayout;
@@ -13,6 +12,7 @@ import com.test.mytest.R;
 import com.test.mytest.adapter.VPAdapter;
 import com.test.mytest.api.bean.TabEntity;
 import com.test.mytest.module.base.BaseFragment;
+import com.test.mytest.module.club.ClubListFragment;
 import com.test.mytest.module.photo.main.PhotoListFragment;
 
 import java.util.ArrayList;
@@ -78,6 +78,7 @@ public class HomeFragment extends BaseFragment {
 
     private void initHomeFragmentList() {
         fragments.add(PhotoListFragment.newInstance());
+        fragments.add(ClubListFragment.newInstance());
     }
 
     //tablayout初始化

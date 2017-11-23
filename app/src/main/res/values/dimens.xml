@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="photo_margin_width">1dp</dimen>
+
+    <!--字体大小 start -->
+    <dimen name="big_text_size">16sp</dimen>
+    <dimen name="mid_text_size">14sp</dimen>
+    <dimen name="small_text_size">12sp</dimen>
+    <dimen name="little_text_size">8sp</dimen>
 </resources>

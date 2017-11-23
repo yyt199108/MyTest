@@ -30,7 +30,8 @@ public class HomeActivity extends BaseActivity {
     }
 
     @Override
-    protected void updateView(boolean isRefresh) {
+    protected void updateViews(boolean isRefresh) {
+
     }
 
     @Override
