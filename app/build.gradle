@@ -72,4 +72,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.7'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
+
+    //fresco
+    compile 'com.facebook.fresco:fresco:1.5.0'
 }

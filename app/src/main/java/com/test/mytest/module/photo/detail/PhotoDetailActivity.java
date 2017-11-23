@@ -1,5 +1,6 @@
 package com.test.mytest.module.photo.detail;
 
+import com.test.mytest.R;
 import com.test.mytest.module.base.BaseActivity;
 
 /**
@@ -9,7 +10,7 @@ import com.test.mytest.module.base.BaseActivity;
 public class PhotoDetailActivity extends BaseActivity {
     @Override
     protected int attachLayoutRes() {
-        return 0;
+        return R.layout.activity_photo_detail;
     }
 
     @Override

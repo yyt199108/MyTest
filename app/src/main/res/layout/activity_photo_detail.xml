@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/sdv_pet_head_photo"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
+                    fresco:placeholderImage="@drawable/ic_pet2"
+                    fresco:roundAsCircle="true" />
+
+                <TextView
+                    android:id="@+id/tv_pet_nick"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="年年" />
+
+                <TextView
+                    style="@style/text_center_size16"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/colorAccent"
+                    android:text="+关注" />
+            </LinearLayout>
+
+            <TextView
+                android:padding="@dimen/dp_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="你好啊，深邃的夜空。" />
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_photo"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                fresco:actualImageResource="@drawable/ic_pet2" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/tv_like"
+            style="@style/text_center_size16"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/liked" />
+
+        <TextView
+            android:id="@+id/tv_comment"
+            style="@style/text_center_size16"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/comment" />
+
+        <TextView
+            android:id="@+id/tv_reward"
+            style="@style/text_center_size16"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/reward" />
+
+        <TextView
+            android:id="@+id/tv_share"
+            style="@style/text_center_size16"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/share" />
+    </LinearLayout>
+</LinearLayout>

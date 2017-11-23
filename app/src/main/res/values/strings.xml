@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">MyTest</string>
     <string name="menu_pic">图集</string>
+    <string name="liked">点赞</string>
+    <string name="comment">评论</string>
+    <string name="reward">打赏</string>
+    <string name="share">分享</string>
 </resources>

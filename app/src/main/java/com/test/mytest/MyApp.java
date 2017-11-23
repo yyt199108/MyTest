@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.blankj.utilcode.utils.Utils;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 /**
  * Created by yyt19 on 2017/11/22.
@@ -19,6 +20,8 @@ public class MyApp extends Application {
         mContext=getApplicationContext();
 
         Utils.init(this);
+
+        Fresco.initialize(this);
     }
 
     public static Context getContext(){
