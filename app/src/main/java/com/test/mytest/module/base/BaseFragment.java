@@ -6,6 +6,7 @@ import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ import rx.subjects.BehaviorSubject;
  * Created by admin on 2017-11-22.
  */
 
-public abstract class BaseFragment<T extends IBasePresenter> extends SupportFragment implements LifecycleProvider<FragmentEvent> {
+public abstract class BaseFragment<T extends IBasePresenter> extends SupportFragment implements IBaseView, LifecycleProvider<FragmentEvent>,EmptyLayout.OnRetryListener {
 
     protected Context mContext;
     //缓存Fragment view
@@ -43,6 +44,10 @@ public abstract class BaseFragment<T extends IBasePresenter> extends SupportFrag
     @Nullable
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefresh;
+
+    @Nullable
+    @BindView(R.id.recy_view)
+    protected RecyclerView mRecyView;
 
     @Inject
     protected T mPresenter;
@@ -140,6 +145,52 @@ public abstract class BaseFragment<T extends IBasePresenter> extends SupportFrag
      * @param isRefresh 新增参数，用来判断是否为下拉刷新调用，下拉刷新的时候不应该再显示加载界面和异常界面
      */
     protected abstract void updateViews(boolean isRefresh);
+
+    /**
+     * 显示加载动画
+     */
+    @Override
+    public void showLoading(){
+        if(mEmptyLayout!=null){
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_LOADING);
+            SwipeRefreshHelper.enableRefresh(mSwipeRefresh,false);
+        }
+    }
+    /**
+     * 隐藏加载
+     */
+    @Override
+    public void hideLoading(){
+        if(mEmptyLayout!=null){
+            mEmptyLayout.hide();
+            SwipeRefreshHelper.enableRefresh(mSwipeRefresh,true);
+            SwipeRefreshHelper.controlRefresh(mSwipeRefresh,false);
+        }
+    }
+    /**
+     * 显示网络错误，modify 对网络异常在 BaseActivity 和 BaseFragment 统一处理
+     */
+    @Override
+    public void showNetError(){
+        if(mEmptyLayout!=null){
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_NET);
+            mEmptyLayout.setRetryListener(this);
+        }
+    }
+    /**
+     * 完成刷新, 新增控制刷新
+     */
+    @Override
+    public void finishRefresh(){
+        if(mSwipeRefresh!=null){
+            mSwipeRefresh.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void onRetry() {
+        updateViews(false);
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

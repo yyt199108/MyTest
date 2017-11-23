@@ -29,10 +29,10 @@ import butterknife.OnClick;
 
 public class EmptyLayout extends FrameLayout {
 
-    private static final int STATUS_HIDE = 1001;
-    private static final int STATUS_LOADING = 1;
-    private static final int STATUS_NO_NET = 2;
-    private static final int STATUS_NO_DATA = 3;
+    public static final int STATUS_HIDE = 1001;
+    public static final int STATUS_LOADING = 1;
+    public static final int STATUS_NO_NET = 2;
+    public static final int STATUS_NO_DATA = 3;
     private Context mContext;
     private int mBgColor;
     private OnRetryListener mOnRetryListener;

@@ -31,7 +31,7 @@ import rx.subjects.BehaviorSubject;
  * Created by admin on 2017-11-21.
  */
 
-public abstract class BaseActivity<T extends IBasePresenter> extends SupportActivity implements LifecycleProvider<ActivityEvent> {
+public abstract class BaseActivity<T extends IBasePresenter> extends SupportActivity implements IBaseView, LifecycleProvider<ActivityEvent>,EmptyLayout.OnRetryListener {
     /**
      * @Nullalbe 表明view可以为null
      */
@@ -69,7 +69,7 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
         initInjector();
         initViews();
         initSwipeRefresh();
-        updateView(false);
+        updateViews(false);
     }
 
     private void initSwipeRefresh() {
@@ -77,7 +77,7 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
             SwipeRefreshHelper.init(mSwipeRefresh, new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    updateView(true);
+                    updateViews(true);
                 }
             });
         }
@@ -106,7 +106,53 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
      *
      * @param isRefresh
      */
-    protected abstract void updateView(boolean isRefresh);
+    protected abstract void updateViews(boolean isRefresh);
+
+    /**
+     * 显示加载动画
+     */
+    @Override
+    public void showLoading(){
+        if(mEmptyLayout!=null){
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_LOADING);
+            SwipeRefreshHelper.enableRefresh(mSwipeRefresh,false);
+        }
+    }
+    /**
+     * 隐藏加载
+     */
+    @Override
+    public void hideLoading(){
+        if(mEmptyLayout!=null){
+            mEmptyLayout.hide();
+            SwipeRefreshHelper.enableRefresh(mSwipeRefresh,true);
+            SwipeRefreshHelper.controlRefresh(mSwipeRefresh,false);
+        }
+    }
+    /**
+     * 显示网络错误，modify 对网络异常在 BaseActivity 和 BaseFragment 统一处理
+     */
+    @Override
+    public void showNetError(){
+        if(mEmptyLayout!=null){
+            mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_NET);
+            mEmptyLayout.setRetryListener(this);
+        }
+    }
+    /**
+     * 完成刷新, 新增控制刷新
+     */
+    @Override
+    public void finishRefresh(){
+        if(mSwipeRefresh!=null){
+            mSwipeRefresh.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void onRetry() {
+        updateViews(false);
+    }
 
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
