@@ -7,7 +7,6 @@ import com.test.mytest.R;
 import com.test.mytest.injector.components.DaggerPhotoDetailComponent;
 import com.test.mytest.injector.module.PhotoDetailModule;
 import com.test.mytest.module.base.BaseActivity;
-import com.test.mytest.module.base.IBasePresenter;
 
 import butterknife.OnClick;
 
@@ -26,7 +25,8 @@ public class PhotoDetailActivity extends BaseActivity {
     protected void initInjector() {
         DaggerPhotoDetailComponent.builder()
                 .photoDetailModule(new PhotoDetailModule())
-                .build();
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -47,12 +47,12 @@ public class PhotoDetailActivity extends BaseActivity {
     }
 
     @OnClick({R.id.tv_like})
-    public void onClick(View view){
-        switch (view.getId()){
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.tv_like:
-                if(mPresenter!=null) {
+                if (mPresenter != null) {
                     mPresenter.getData(false);
-                }else{
+                } else {
                     ToastUtils.showLongToastSafe("null");
                 }
                 break;
