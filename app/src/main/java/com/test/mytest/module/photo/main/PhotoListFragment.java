@@ -1,5 +1,6 @@
 package com.test.mytest.module.photo.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.test.mytest.injector.components.DaggerPhotoListComponent;
 import com.test.mytest.injector.module.PhotoListModule;
 import com.test.mytest.module.base.BaseFragment;
 import com.test.mytest.module.base.IBasePresenter;
+import com.test.mytest.module.photo.detail.PhotoDetailActivity;
 
 import java.util.List;
 
@@ -67,7 +69,7 @@ public class PhotoListFragment extends BaseFragment<IBasePresenter> implements P
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     //跳转到详情
-
+                    startActivity(new Intent(mContext, PhotoDetailActivity.class));
                 }
             });
         }

@@ -9,4 +9,9 @@
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
+
+    <style name="text_center_size16">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/sp_16</item>
+    </style>
 </resources>
