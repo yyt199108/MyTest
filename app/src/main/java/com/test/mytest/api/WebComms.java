@@ -5,5 +5,5 @@ package com.test.mytest.api;
  */
 
 public interface WebComms {
-    String BASE_URL = "";
+    String BASE_URL = "http://www.baidu.com";
 }

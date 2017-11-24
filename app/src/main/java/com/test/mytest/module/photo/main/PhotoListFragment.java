@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.test.mytest.R;
-import com.test.mytest.adapter.PhotoListAdapter;
 import com.test.mytest.api.bean.PhotoInfoBean;
 import com.test.mytest.injector.components.DaggerPhotoListComponent;
 import com.test.mytest.injector.module.PhotoListModule;
@@ -44,6 +43,7 @@ public class PhotoListFragment extends BaseFragment<IBasePresenter> implements P
     protected void initInjector() {
         DaggerPhotoListComponent.builder()
                 .photoListModule(new PhotoListModule(this))
+                .applicationComponent(getApplicationComponent())
                 .build()
                 .inject(this);
     }

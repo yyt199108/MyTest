@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.blankj.utilcode.utils.NetworkUtils;
 import com.socks.library.KLog;
-import com.test.mytest.MyApp;
+import com.test.mytest.application.MyApp;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,13 +34,12 @@ public class RetrofitService {
     static final long CACHE_STALE_SEC = 60 * 60 * 24 * 1;
     //查询缓存的Cache-Control设置，为if-only-cache时只查询缓存而不会请求服务器，max-stale可以配合设置缓存失效时间
     private static final String CACHE_CONTROL_CACHE = "only-if-cached, max-stale=" + CACHE_STALE_SEC;
-    public static IPhotoApi mPhotoService;
 
     private RetrofitService(){
         throw new AssertionError();
     }
 
-    public static void init(){
+    public static Retrofit init(){
         //指定缓存路径，缓存大小100Mb
         Cache cache = new Cache(new File(MyApp.getContext().getCacheDir(),"HttpCache"),1024*1024*100);
         OkHttpClient okHttpClient=new OkHttpClient.Builder().cache(cache)
@@ -56,7 +55,7 @@ public class RetrofitService {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(WebComms.BASE_URL)
                 .build();
-        mPhotoService=retrofit.create(IPhotoApi.class);
+        return retrofit;
     }
 
     /**
