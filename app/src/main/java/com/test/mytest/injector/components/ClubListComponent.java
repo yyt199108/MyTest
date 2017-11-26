@@ -2,7 +2,7 @@ package com.test.mytest.injector.components;
 
 import com.test.mytest.injector.PerFragment;
 import com.test.mytest.injector.module.ClubListModule;
-import com.test.mytest.module.club.ClubListFragment;
+import com.test.mytest.module.club.BBSListFragment;
 
 import dagger.Component;
 
@@ -12,5 +12,5 @@ import dagger.Component;
 @PerFragment
 @Component(modules = ClubListModule.class)
 public interface ClubListComponent {
-    void inject(ClubListFragment fragment);
+    void inject(BBSListFragment fragment);
 }

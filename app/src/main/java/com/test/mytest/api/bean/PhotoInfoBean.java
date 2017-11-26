@@ -10,4 +10,6 @@ public class PhotoInfoBean {
     public float height;
     public float width;
     @DrawableRes public int resId;
+    public String infoName;
+    public String photoTag;
 }

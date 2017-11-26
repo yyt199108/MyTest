@@ -2,27 +2,37 @@ package com.test.mytest.module.photo.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.blankj.utilcode.utils.ImageUtils;
+import com.blankj.utilcode.utils.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.jph.takephoto.model.TResult;
 import com.test.mytest.R;
 import com.test.mytest.api.bean.PhotoInfoBean;
 import com.test.mytest.injector.components.DaggerPhotoListComponent;
 import com.test.mytest.injector.module.PhotoListModule;
-import com.test.mytest.module.base.BaseFragment;
+import com.test.mytest.module.base.BaseTakePhotoFragment;
 import com.test.mytest.module.base.IBasePresenter;
 import com.test.mytest.module.photo.detail.PhotoDetailActivity;
+import com.test.mytest.utils.CustomTakePhotoHelper;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.OnClick;
+
 /**
  * Created by admin on 2017-11-22.
  */
 
-public class PhotoListFragment extends BaseFragment<IBasePresenter> implements PhotoListContract.View {
+public class PhotoListFragment extends BaseTakePhotoFragment<IBasePresenter> implements PhotoListContract.View {
 
     public static PhotoListFragment newInstance() {
         PhotoListFragment fragment = new PhotoListFragment();
@@ -77,7 +87,7 @@ public class PhotoListFragment extends BaseFragment<IBasePresenter> implements P
 
     @Override
     protected void updateViews(boolean isRefresh) {
-        mPresenter.getData(false);
+        mPresenter.getData(isRefresh);
     }
 
     @Override
@@ -100,5 +110,56 @@ public class PhotoListFragment extends BaseFragment<IBasePresenter> implements P
     @Override
     public void loadNoData() {
 
+    }
+
+    @OnClick({R.id.tv_add_pic})
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id) {
+            case R.id.tv_add_pic:
+                showAddPicDialog();
+                break;
+        }
+    }
+
+    private void showAddPicDialog() {
+        final BottomSheetDialog dialog = new BottomSheetDialog(mContext);
+        View dialogView = LayoutInflater.from(mContext)
+                .inflate(R.layout.dialog_take_photo, null);
+        TextView tvTakePhoto = (TextView) dialogView.findViewById(R.id.tv_take_photo);
+        TextView tvPhotoAlbum = (TextView) dialogView.findViewById(R.id.tv_photo_album);
+        TextView tvCancel = (TextView) dialogView.findViewById(R.id.tv_cancel);
+        tvTakePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomTakePhotoHelper.pickByCamera(getTakePhoto());
+                dialog.dismiss();
+            }
+        });
+        tvPhotoAlbum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomTakePhotoHelper.pickByAlbum(getTakePhoto());
+                dialog.dismiss();
+            }
+        });
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setContentView(dialogView);
+        dialog.show();
+    }
+
+    @Override
+    public void takeSuccess(TResult result) {
+        super.takeSuccess(result);
+        int[] widthHeight = CustomTakePhotoHelper.getImageWidthHeight(result.getImage().getCompressPath());
+        ToastUtils.showLongToastSafe("width:" + widthHeight[0]
+                + ";height:" + widthHeight[1]);
     }
 }

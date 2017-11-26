@@ -10,7 +10,7 @@ import java.util.List;
  * Created by admin on 2017-11-23.
  */
 
-public interface ClubListContract {
+public interface BBSListContract {
 
     interface View extends ILoadDataView<List<PhotoInfoBean>> {
     }

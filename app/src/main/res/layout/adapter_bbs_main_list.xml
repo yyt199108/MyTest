@@ -3,11 +3,18 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
+    android:paddingTop="@dimen/dp_20"
     android:layout_margin="@dimen/photo_margin_width">
     <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/img_photo"
         android:scaleType="fitXY"
         android:src="@drawable/ic_not_network"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_photo_info"
+        android:padding="@dimen/dp_10"
+        android:gravity="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

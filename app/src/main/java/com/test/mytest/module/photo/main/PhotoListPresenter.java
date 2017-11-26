@@ -34,24 +34,24 @@ public class PhotoListPresenter implements PhotoListContract.Presenter {
         for(int i=0;i<10;i++) {
             PhotoInfoBean infoBean = new PhotoInfoBean();
             if(i%5==0){
-                infoBean.height = 800;
-                infoBean.width = 400;
+                infoBean.width = 1200;
+                infoBean.height = 1800;
                 infoBean.resId=R.drawable.ic_pet1;
             }else  if(i%5==1){
-                infoBean.height = 400;
-                infoBean.width = 400;
+                infoBean.width = 1920;
+                infoBean.height = 1200;
                 infoBean.resId=R.drawable.ic_pet2;
             }else  if(i%5==2){
-                infoBean.height = 200;
-                infoBean.width = 400;
+                infoBean.width = 548;
+                infoBean.height = 660;
                 infoBean.resId=R.drawable.ic_pet3;
             }else  if(i%5==3){
-                infoBean.height = 500;
-                infoBean.width = 400;
+                infoBean.width = 939;
+                infoBean.height = 1200;
                 infoBean.resId=R.drawable.ic_pet4;
             }else  if(i%5==4){
-                infoBean.height = 100;
-                infoBean.width = 400;
+                infoBean.width = 1024;
+                infoBean.height = 683;
                 infoBean.resId=R.drawable.ic_pet5;
             }else if(i%5==0&&i%6==0) {
                 infoBean.resId=R.drawable.ic_github;
@@ -73,24 +73,24 @@ public class PhotoListPresenter implements PhotoListContract.Presenter {
         for(int i=0;i<10;i++) {
             PhotoInfoBean infoBean = new PhotoInfoBean();
             if(i%5==0){
-                infoBean.height = 800;
-                infoBean.width = 400;
+                infoBean.width = 1200;
+                infoBean.height = 1800;
                 infoBean.resId=R.drawable.ic_pet1;
             }else  if(i%5==1){
-                infoBean.height = 400;
-                infoBean.width = 400;
+                infoBean.width = 1920;
+                infoBean.height = 1200;
                 infoBean.resId=R.drawable.ic_pet2;
             }else  if(i%5==2){
-                infoBean.height = 200;
-                infoBean.width = 400;
+                infoBean.width = 548;
+                infoBean.height = 660;
                 infoBean.resId=R.drawable.ic_pet3;
             }else  if(i%5==3){
-                infoBean.height = 500;
-                infoBean.width = 400;
+                infoBean.width = 939;
+                infoBean.height = 1200;
                 infoBean.resId=R.drawable.ic_pet4;
             }else  if(i%5==4){
-                infoBean.height = 100;
-                infoBean.width = 400;
+                infoBean.width = 1024;
+                infoBean.height = 683;
                 infoBean.resId=R.drawable.ic_pet5;
             }else if(i%5==0&&i%6==0) {
                 infoBean.resId=R.drawable.ic_github;

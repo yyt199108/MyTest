@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.test.mytest.R;
 import com.test.mytest.application.MyApp;
@@ -50,6 +51,14 @@ public abstract class BaseFragment<T extends IBasePresenter> extends SupportFrag
     @Nullable
     @BindView(R.id.recy_view)
     protected RecyclerView mRecyView;
+
+    @Nullable
+    @BindView(R.id.title)
+    protected TextView mTitle;
+
+    @Nullable
+    @BindView(R.id.back_img_lay)
+    protected View mBackLay;
 
     @Inject
     protected T mPresenter;

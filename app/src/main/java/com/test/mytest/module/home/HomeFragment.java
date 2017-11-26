@@ -12,7 +12,7 @@ import com.test.mytest.R;
 import com.test.mytest.adapter.VPAdapter;
 import com.test.mytest.api.bean.TabEntity;
 import com.test.mytest.module.base.BaseFragment;
-import com.test.mytest.module.club.ClubListFragment;
+import com.test.mytest.module.club.BBSListFragment;
 import com.test.mytest.module.photo.main.PhotoListFragment;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class HomeFragment extends BaseFragment {
 
     List<Fragment> fragments = new ArrayList<Fragment>();
 
-    private String[] mTitles = {"1", "2", "3", "4"};
+    private String[] mTitles = {"首页", "论坛", "商店", "设置"};
 
     private int[] mIconUnselectIds = {
             R.mipmap.ic_launcher, R.mipmap.ic_launcher,
@@ -78,7 +78,7 @@ public class HomeFragment extends BaseFragment {
 
     private void initHomeFragmentList() {
         fragments.add(PhotoListFragment.newInstance());
-        fragments.add(ClubListFragment.newInstance());
+        fragments.add(BBSListFragment.newInstance());
     }
 
     //tablayout初始化

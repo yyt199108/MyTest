@@ -18,6 +18,7 @@
         android:background="#ffffff"
         app:tl_iconHeight="23dp"
         app:tl_iconWidth="23dp"
+        app:tl_iconVisible="false"
         app:tl_indicator_color="@color/colorAccent"
         app:tl_indicator_height="0dp"
         app:tl_textSelectColor="@color/colorAccent"

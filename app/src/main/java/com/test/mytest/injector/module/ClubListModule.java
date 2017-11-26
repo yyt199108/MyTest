@@ -1,10 +1,10 @@
 package com.test.mytest.injector.module;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.test.mytest.adapter.ClubListAdapter;
+import com.test.mytest.adapter.BBSListAdapter;
 import com.test.mytest.module.base.IBasePresenter;
-import com.test.mytest.module.club.ClubListContract;
-import com.test.mytest.module.club.ClubListPresenter;
+import com.test.mytest.module.club.BBSListContract;
+import com.test.mytest.module.club.BBSListPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -15,17 +15,17 @@ import dagger.Provides;
 
 @Module
 public class ClubListModule {
-    private ClubListContract.View mView;
+    private BBSListContract.View mView;
 
-    public ClubListModule(ClubListContract.View view){
+    public ClubListModule(BBSListContract.View view){
         this.mView=view;
     }
     @Provides
     IBasePresenter providePresenter(){
-        return new ClubListPresenter(mView);
+        return new BBSListPresenter(mView);
     }
     @Provides
     BaseQuickAdapter provideAdapter(){
-        return new ClubListAdapter();
+        return new BBSListAdapter();
     }
 }

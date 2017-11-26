@@ -3,6 +3,7 @@ package com.test.mytest.module.club;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.test.mytest.R;
@@ -19,10 +20,10 @@ import javax.inject.Inject;
  * Created by admin on 2017-11-23.
  */
 
-public class ClubListFragment extends BaseFragment implements ClubListContract.View {
+public class BBSListFragment extends BaseFragment implements BBSListContract.View {
 
-    public static ClubListFragment newInstance() {
-        ClubListFragment fragment = new ClubListFragment();
+    public static BBSListFragment newInstance() {
+        BBSListFragment fragment = new BBSListFragment();
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);
         return fragment;
@@ -38,22 +39,36 @@ public class ClubListFragment extends BaseFragment implements ClubListContract.V
 
     @Override
     protected void initInjector() {
-        DaggerClubListComponent.builder().clubListModule(new ClubListModule(this)).build();
+        DaggerClubListComponent.builder()
+                .clubListModule(new ClubListModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
     protected void initViews() {
-        mRecyView.setLayoutManager(new GridLayoutManager(mContext,3, LinearLayoutManager.VERTICAL,false));
+        initTitle();
+        mRecyView.setLayoutManager(new GridLayoutManager(mContext, 3, LinearLayoutManager.VERTICAL, false));
+        mRecyView.setAdapter(mAdapter);
+    }
+
+    private void initTitle() {
+        if(mTitle!=null){
+            mTitle.setText("论坛");
+        }
+        if(mBackLay!=null){
+            mBackLay.setVisibility(View.GONE);
+        }
     }
 
     @Override
     protected void updateViews(boolean isRefresh) {
-
+        mPresenter.getData(isRefresh);
     }
 
     @Override
     public void loadData(List<PhotoInfoBean> data) {
-
+        mAdapter.addData(data);
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import com.test.mytest.R;
@@ -43,6 +44,20 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
     @Nullable
     @BindView(R.id.title)
     protected TextView mTitle;
+
+    @Nullable
+    @BindView(R.id.back_img_lay)
+    protected View mBackLay;
+
+    @Nullable
+    @BindView(R.id.right_tv)
+    protected TextView mRightTv;
+
+    @Nullable
+    @BindView(R.id.right_lay)
+    protected View mRightLay;
+
+
 
     /**
      * 把Presenter提取到基类需要配合基类的initInjector()进行注入。
