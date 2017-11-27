@@ -4,7 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
+import com.blankj.utilcode.utils.ToastUtils;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoImpl;
 import com.jph.takephoto.model.InvokeParam;
@@ -15,6 +20,7 @@ import com.jph.takephoto.permission.PermissionManager;
 import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.socks.library.KLog;
 import com.test.mytest.R;
+import com.test.mytest.utils.CustomTakePhotoHelper;
 
 /**
  * Created by yyt19 on 2017/11/26.
@@ -66,6 +72,9 @@ public abstract class BaseTakePhotoFragment<T extends IBasePresenter> extends Ba
     @Override
     public void takeSuccess(TResult result) {
         KLog.i("takeSuccess：" + result.getImage().getCompressPath());
+        int[] widthHeight = CustomTakePhotoHelper.getImageWidthHeight(result.getImage().getCompressPath());
+        ToastUtils.showLongToastSafe("width:" + widthHeight[0]
+                + ";height:" + widthHeight[1]);
     }
 
     @Override
@@ -85,5 +94,38 @@ public abstract class BaseTakePhotoFragment<T extends IBasePresenter> extends Ba
             this.invokeParam = invokeParam;
         }
         return type;
+    }
+
+    protected void showAddPicDialog() {
+        final BottomSheetDialog dialog = new BottomSheetDialog(mContext);
+        View dialogView = LayoutInflater.from(mContext)
+                .inflate(R.layout.dialog_take_photo, null);
+        TextView tvTakePhoto = (TextView) dialogView.findViewById(R.id.tv_take_photo);
+        TextView tvPhotoAlbum = (TextView) dialogView.findViewById(R.id.tv_photo_album);
+        TextView tvCancel = (TextView) dialogView.findViewById(R.id.tv_cancel);
+        tvTakePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomTakePhotoHelper.pickByCamera(getTakePhoto());
+                dialog.dismiss();
+            }
+        });
+        tvPhotoAlbum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomTakePhotoHelper.pickByAlbum(getTakePhoto());
+                dialog.dismiss();
+            }
+        });
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setContentView(dialogView);
+        dialog.show();
     }
 }

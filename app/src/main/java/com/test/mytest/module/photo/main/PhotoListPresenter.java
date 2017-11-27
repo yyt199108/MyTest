@@ -1,16 +1,11 @@
 package com.test.mytest.module.photo.main;
 
-import com.blankj.utilcode.utils.ThreadPoolUtils;
-import com.blankj.utilcode.utils.Utils;
 import com.test.mytest.R;
+import com.test.mytest.api.PhotoModel;
 import com.test.mytest.api.bean.PhotoInfoBean;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Handler;
-
-import rx.Observable;
 
 /**
  * Created by admin on 2017-11-22.
@@ -19,10 +14,12 @@ import rx.Observable;
 
 public class PhotoListPresenter implements PhotoListContract.Presenter {
 
+    private PhotoModel photoModel;
     private PhotoListContract.View mView;
 
     public PhotoListPresenter(PhotoListContract.View view) {
         this.mView = view;
+        photoModel=new PhotoModel();
     }
 
     @Override
@@ -30,41 +27,42 @@ public class PhotoListPresenter implements PhotoListContract.Presenter {
         if(!isRefresh){
             mView.showLoading();
         }
-        List<PhotoInfoBean> list = new ArrayList<>();
-        for(int i=0;i<10;i++) {
-            PhotoInfoBean infoBean = new PhotoInfoBean();
-            if(i%5==0){
-                infoBean.width = 1200;
-                infoBean.height = 1800;
-                infoBean.resId=R.drawable.ic_pet1;
-            }else  if(i%5==1){
-                infoBean.width = 1920;
-                infoBean.height = 1200;
-                infoBean.resId=R.drawable.ic_pet2;
-            }else  if(i%5==2){
-                infoBean.width = 548;
-                infoBean.height = 660;
-                infoBean.resId=R.drawable.ic_pet3;
-            }else  if(i%5==3){
-                infoBean.width = 939;
-                infoBean.height = 1200;
-                infoBean.resId=R.drawable.ic_pet4;
-            }else  if(i%5==4){
-                infoBean.width = 1024;
-                infoBean.height = 683;
-                infoBean.resId=R.drawable.ic_pet5;
-            }else if(i%5==0&&i%6==0) {
-                infoBean.resId=R.drawable.ic_github;
-            }
-            list.add(infoBean);
-
-        }
+//        List<PhotoInfoBean> list = new ArrayList<>();
+//        for(int i=0;i<10;i++) {
+//            PhotoInfoBean infoBean = new PhotoInfoBean();
+//            if(i%5==0){
+//                infoBean.width = 1200;
+//                infoBean.height = 1800;
+//                infoBean.resId=R.drawable.ic_pet1;
+//            }else  if(i%5==1){
+//                infoBean.width = 1920;
+//                infoBean.height = 1200;
+//                infoBean.resId=R.drawable.ic_pet2;
+//            }else  if(i%5==2){
+//                infoBean.width = 548;
+//                infoBean.height = 660;
+//                infoBean.resId=R.drawable.ic_pet3;
+//            }else  if(i%5==3){
+//                infoBean.width = 939;
+//                infoBean.height = 1200;
+//                infoBean.resId=R.drawable.ic_pet4;
+//            }else  if(i%5==4){
+//                infoBean.width = 1024;
+//                infoBean.height = 683;
+//                infoBean.resId=R.drawable.ic_pet5;
+//            }else if(i%5==0&&i%6==0) {
+//                infoBean.resId=R.drawable.ic_github;
+//            }
+//            list.add(infoBean);
+//
+//        }
+        photoModel.getMainPetPhotoList();
         if(isRefresh){
             mView.finishRefresh();
         }else{
             mView.hideLoading();
         }
-        mView.loadData(list);
+//        mView.loadData(list);
     }
 
     @Override

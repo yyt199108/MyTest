@@ -122,44 +122,9 @@ public class PhotoListFragment extends BaseTakePhotoFragment<IBasePresenter> imp
         }
     }
 
-    private void showAddPicDialog() {
-        final BottomSheetDialog dialog = new BottomSheetDialog(mContext);
-        View dialogView = LayoutInflater.from(mContext)
-                .inflate(R.layout.dialog_take_photo, null);
-        TextView tvTakePhoto = (TextView) dialogView.findViewById(R.id.tv_take_photo);
-        TextView tvPhotoAlbum = (TextView) dialogView.findViewById(R.id.tv_photo_album);
-        TextView tvCancel = (TextView) dialogView.findViewById(R.id.tv_cancel);
-        tvTakePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CustomTakePhotoHelper.pickByCamera(getTakePhoto());
-                dialog.dismiss();
-            }
-        });
-        tvPhotoAlbum.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CustomTakePhotoHelper.pickByAlbum(getTakePhoto());
-                dialog.dismiss();
-            }
-        });
-
-        tvCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.setContentView(dialogView);
-        dialog.show();
-    }
-
     @Override
     public void takeSuccess(TResult result) {
         super.takeSuccess(result);
-        int[] widthHeight = CustomTakePhotoHelper.getImageWidthHeight(result.getImage().getCompressPath());
-        ToastUtils.showLongToastSafe("width:" + widthHeight[0]
-                + ";height:" + widthHeight[1]);
+
     }
 }
