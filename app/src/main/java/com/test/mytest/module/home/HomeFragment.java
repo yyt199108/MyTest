@@ -14,6 +14,7 @@ import com.test.mytest.api.bean.TabEntity;
 import com.test.mytest.module.base.BaseFragment;
 import com.test.mytest.module.club.BBSListFragment;
 import com.test.mytest.module.photo.main.PhotoListFragment;
+import com.test.mytest.module.setting.SettingFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,7 @@ public class HomeFragment extends BaseFragment {
     private void initHomeFragmentList() {
         fragments.add(PhotoListFragment.newInstance());
         fragments.add(BBSListFragment.newInstance());
+        fragments.add(SettingFragment.newInstance());
     }
 
     //tablayout初始化

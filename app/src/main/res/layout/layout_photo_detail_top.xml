@@ -49,6 +49,6 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdv_photo"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="300dp"
         fresco:actualImageResource="@drawable/ic_pet2" />
 </LinearLayout>

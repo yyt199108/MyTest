@@ -9,6 +9,7 @@ public class CommentBean {
     public String createTime;
     public String commentContent;
     public String commentLocation;
+    public int commentFavorCount;
     public String nickPic;
     public String doFavor;
     public boolean showCommentTypeTag;

@@ -31,6 +31,10 @@ public class PhotoDetailPresenter implements PhotoDetailContract.Presenter {
         for(int i=0;i<3;i++) {
             CommentBean commentBean=new CommentBean();
             commentBean.createTime = (i+1)+"分钟前";
+            commentBean.commentLocation = "北京/海淀";
+            commentBean.nickName = "卡卡";
+            commentBean.commentContent = "拍照技术真不错";
+            commentBean.commentFavorCount = 22;
             list.add(commentBean);
         }
         if(list.size()>0){

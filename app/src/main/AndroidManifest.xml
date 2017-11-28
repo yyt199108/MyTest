@@ -28,6 +28,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".module.photo.detail.PhotoDetailActivity"/>
+        <activity android:name=".module.comment.CommentListActivity"/>
     </application>
 
 </manifest>

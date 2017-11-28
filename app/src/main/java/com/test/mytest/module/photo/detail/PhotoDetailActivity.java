@@ -1,5 +1,7 @@
 package com.test.mytest.module.photo.detail;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +18,7 @@ import com.test.mytest.api.bean.PhotoDetailBean;
 import com.test.mytest.injector.components.DaggerPhotoDetailComponent;
 import com.test.mytest.injector.module.PhotoDetailModule;
 import com.test.mytest.module.base.BaseActivity;
+import com.test.mytest.module.comment.CommentListActivity;
 
 import java.util.List;
 
@@ -69,11 +72,12 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
         if (mTitle != null) {
             mTitle.setText("图片详情");
         }
-        if(mRightLay!=null){
+        if (mRightLay != null) {
             mRightLay.setVisibility(View.VISIBLE);
         }
         if (mRightTv != null) {
             mRightTv.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_comment_bg));
+            mRightTv.setTextColor(Color.BLACK);
         }
     }
 
@@ -90,7 +94,7 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
         mPresenter.getData(isRefresh);
     }
 
-    @OnClick({R.id.tv_like, R.id.sdv_pet_head_photo, R.id.tv_pet_nick, R.id.tv_do_attention})
+    @OnClick({R.id.tv_like, R.id.sdv_pet_head_photo, R.id.tv_pet_nick, R.id.tv_do_attention,R.id.right_lay})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_like:
@@ -116,12 +120,15 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
             case R.id.back_img_lay:
                 finish();
                 break;
+            case R.id.right_lay:
+                startCommentListAct();
+                break;
         }
     }
 
     @Override
     public void loadPhotoDetailView(PhotoDetailBean photoDetailBean) {
-        mRightTv.setText(photoDetailBean.attentionCount+"条评论");
+        mRightTv.setText(photoDetailBean.attentionCount + "条评论");
     }
 
     @Override
@@ -137,8 +144,12 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
             @Override
             public void onClick(View view) {
                 ToastUtils.showLongToast("加载更多");
+                startCommentListAct();
             }
         });
     }
 
+    private void startCommentListAct() {
+        CommentListActivity.startActivity(this, "1");
+    }
 }

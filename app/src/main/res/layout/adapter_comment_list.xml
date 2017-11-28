@@ -48,11 +48,16 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:text="北京/西城"
+                    android:drawablePadding="@dimen/dp_4"
                     android:drawableLeft="@drawable/ic_location"/>
                 <TextView
+                    android:id="@+id/tv_favor_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_favor"/>
+                    android:text="11"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:drawableLeft="@drawable/ic_favor"/>
             </LinearLayout>
 
         </LinearLayout>

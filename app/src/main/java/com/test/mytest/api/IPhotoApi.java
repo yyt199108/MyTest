@@ -11,6 +11,6 @@ import rx.Observable;
  */
 
 public interface IPhotoApi {
-    @GET("http://www.baidu.com")
+    @GET("http://123.207.141.79:8081/xlqhoutlook/api/appVersion/checkUpdate")
     Observable<BaseListRes<PhotoInfoBean>> getMainPetPhotoList();
 }

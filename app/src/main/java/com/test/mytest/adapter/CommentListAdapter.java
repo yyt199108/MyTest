@@ -22,7 +22,8 @@ public class CommentListAdapter extends BaseQuickAdapter<CommentBean, BaseViewHo
         helper.setText(R.id.tv_pet_nick, item.nickName)
                 .setText(R.id.tv_comment_content, item.commentContent)
                 .setText(R.id.tv_comment_time, item.createTime)
-                .setText(R.id.tv_comment_location, item.commentLocation);
+                .setText(R.id.tv_comment_location, item.commentLocation)
+                .setText(R.id.tv_favor_count, item.commentFavorCount + "");
         if (item.showCommentTypeTag) {
             helper.setText(R.id.comment_type_tag, TextUtils.isEmpty(item.commentTypeName) ? "热门评论" : item.commentTypeName);
         }
