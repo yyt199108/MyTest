@@ -1,5 +1,6 @@
-package com.test.mytest.api;
+package com.test.mytest.api.model;
 
+import com.test.mytest.api.IPhotoApi;
 import com.test.mytest.api.bean.PhotoInfoBean;
 import com.test.mytest.api.response.BaseListRes;
 import com.test.mytest.application.MyApp;

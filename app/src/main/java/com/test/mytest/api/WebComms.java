@@ -5,5 +5,5 @@ package com.test.mytest.api;
  */
 
 public interface WebComms {
-    String BASE_URL = "http://www.baidu.com";
+    String BASE_URL = "http://123.207.141.79:8081/xlqhoutlook/api/";
 }

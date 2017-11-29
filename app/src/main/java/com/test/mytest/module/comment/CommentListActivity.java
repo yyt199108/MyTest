@@ -50,7 +50,7 @@ public class CommentListActivity extends BaseActivity implements CommentListCont
 
     @Override
     protected void updateViews(boolean isRefresh) {
-
+        mPresenter.getData(isRefresh);
     }
 
     @Override

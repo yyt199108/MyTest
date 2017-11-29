@@ -2,7 +2,7 @@ package com.test.mytest.module.photo.main;
 
 import com.socks.library.KLog;
 import com.test.mytest.R;
-import com.test.mytest.api.PhotoModel;
+import com.test.mytest.api.model.PhotoModel;
 import com.test.mytest.api.bean.PhotoInfoBean;
 import com.test.mytest.api.response.BaseListRes;
 

@@ -3,7 +3,7 @@ package com.test.mytest.injector.components;
 import android.content.Context;
 
 import com.test.mytest.api.IPhotoApi;
-import com.test.mytest.api.PhotoModel;
+import com.test.mytest.api.model.PhotoModel;
 import com.test.mytest.injector.module.ApplicationModule;
 
 import javax.inject.Singleton;
