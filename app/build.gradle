@@ -78,4 +78,7 @@ dependencies {
 
     //takephoto
     compile 'com.jph.takephoto:takephoto_library:4.0.3'
+
+    //textview
+    compile 'com.github.lygttpod:SuperTextView:2.1.5'
 }

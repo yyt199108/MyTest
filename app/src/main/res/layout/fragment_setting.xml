@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:stv="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -23,6 +24,30 @@
             <View android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/black"/>
+            <com.allen.library.SuperTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></com.allen.library.SuperTextView>
+            <com.allen.library.SuperTextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                stv:sLeftTextSize="14sp"
+                stv:sLeftTextString="客服热线"
+                stv:sRightIconRes="@drawable/ic_arrow_back"
+                stv:sDividerLineType="bottom"
+                stv:sRightTextColor="#000000"
+                stv:sRightTextSize="12sp"
+                stv:sRightTextString="4006179999" />
+            <com.allen.library.SuperTextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                stv:sLeftTextSize="14sp"
+                android:layout_marginTop="10dp"
+                stv:sLeftTextString="客服热线"
+                stv:sRightIconRes="@drawable/ic_arrow_back"
+                stv:sDividerLineType="bottom"
+                stv:sRightTextColor="#000000"
+                stv:sRightTextSize="12sp"
+                stv:sRightTextString="4006179999" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
