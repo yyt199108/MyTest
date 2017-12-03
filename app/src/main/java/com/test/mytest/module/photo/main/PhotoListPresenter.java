@@ -9,7 +9,8 @@ import com.test.mytest.api.response.BaseListRes;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observer;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by admin on 2017-11-22.
@@ -33,13 +34,18 @@ public class PhotoListPresenter implements PhotoListContract.Presenter {
         }
         photoModel.getMainPetPhotoList().subscribe(new Observer<BaseListRes<PhotoInfoBean>>() {
             @Override
-            public void onCompleted() {
+            public void onError(Throwable e) {
+                KLog.e(e);
+            }
+
+            @Override
+            public void onComplete() {
                 KLog.e("onComplete");
             }
 
             @Override
-            public void onError(Throwable e) {
-                KLog.e(e);
+            public void onSubscribe(Disposable d) {
+
             }
 
             @Override

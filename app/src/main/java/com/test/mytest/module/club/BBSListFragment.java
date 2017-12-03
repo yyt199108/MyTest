@@ -80,4 +80,9 @@ public class BBSListFragment extends BaseFragment implements BBSListContract.Vie
     public void loadNoData() {
 
     }
+
+    @Override
+    public void hasNoMoreData() {
+
+    }
 }

@@ -21,4 +21,6 @@ public interface ILoadDataView<T> extends IBaseView {
      * 没有数据
      */
     void loadNoData();
+
+    void hasNoMoreData();
 }

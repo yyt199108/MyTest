@@ -112,6 +112,11 @@ public class PhotoListFragment extends BaseTakePhotoFragment<IBasePresenter> imp
 
     }
 
+    @Override
+    public void hasNoMoreData() {
+        mAdapter.loadMoreEnd();
+    }
+
     @OnClick({R.id.tv_add_pic})
     public void onClick(View view) {
         int id = view.getId();

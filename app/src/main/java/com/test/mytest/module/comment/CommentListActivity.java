@@ -2,7 +2,9 @@ package com.test.mytest.module.comment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.test.mytest.R;
 import com.test.mytest.api.bean.CommentBean;
 import com.test.mytest.injector.components.DaggerCommentListComponent;
@@ -11,12 +13,17 @@ import com.test.mytest.module.base.BaseActivity;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by yyt19 on 2017/11/28.
  */
 
 public class CommentListActivity extends BaseActivity implements CommentListContract.View {
     private static final String TAG_COMMENT_ID = "commentIdTag";
+
+    @Inject
+    BaseQuickAdapter mAdapter;
 
     public static void startActivity(Context fromContext, String commentId) {
         Intent intent = new Intent(fromContext, CommentListActivity.class);
@@ -40,6 +47,23 @@ public class CommentListActivity extends BaseActivity implements CommentListCont
     @Override
     protected void initViews() {
         initTitleView();
+        initRec();
+    }
+
+    private void initRec() {
+        if (mRecyView != null) {
+            LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            mRecyView.setLayoutManager(manager);
+            mRecyView.setAdapter(mAdapter);
+            //设置adapter
+            mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                @Override
+                public void onLoadMoreRequested() {
+                    page++;
+                    mPresenter.getMoreData();
+                }
+            }, mRecyView);
+        }
     }
 
     private void initTitleView() {
@@ -55,7 +79,7 @@ public class CommentListActivity extends BaseActivity implements CommentListCont
 
     @Override
     public void loadData(List<CommentBean> data) {
-
+        mAdapter.setNewData(data);
     }
 
     @Override
@@ -66,6 +90,11 @@ public class CommentListActivity extends BaseActivity implements CommentListCont
     @Override
     public void loadNoData() {
 
+    }
+
+    @Override
+    public void hasNoMoreData() {
+        mAdapter.loadMoreEnd();
     }
 
 

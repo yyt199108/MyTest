@@ -14,26 +14,26 @@ import android.widget.TextView;
 import com.test.mytest.R;
 import com.test.mytest.utils.SwipeRefreshHelper;
 import com.test.mytest.widget.EmptyLayout;
-import com.trello.rxlifecycle.LifecycleProvider;
-import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.RxLifecycle;
-import com.trello.rxlifecycle.android.ActivityEvent;
-import com.trello.rxlifecycle.android.RxLifecycleAndroid;
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.RxLifecycle;
+import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 import me.yokeyword.fragmentation.SupportActivity;
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
 
 /**
  * 基类Activity
  * Created by admin on 2017-11-21.
  */
 
-public abstract class BaseActivity<T extends IBasePresenter> extends SupportActivity implements IBaseView, LifecycleProvider<ActivityEvent>,EmptyLayout.OnRetryListener {
+public abstract class BaseActivity<T extends IBasePresenter> extends SupportActivity implements IBaseView, LifecycleProvider<ActivityEvent>, EmptyLayout.OnRetryListener {
     /**
      * @Nullalbe 表明view可以为null
      */
@@ -58,7 +58,6 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
     protected View mRightLay;
 
 
-
     /**
      * 把Presenter提取到基类需要配合基类的initInjector()进行注入。
      * 如果继承这个基类则必定要提供一个Presenter注入方法
@@ -79,18 +78,7 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
     @BindView(R.id.recy_view)
     protected RecyclerView mRecyView;
 
-    @Override
-    @CallSuper
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        lifecycleSubject.onNext(ActivityEvent.CREATE);
-        setContentView(attachLayoutRes());
-        ButterKnife.bind(this);
-        initInjector();
-        initViews();
-        initSwipeRefresh();
-        updateViews(false);
-    }
+    protected int page = 0;
 
     private void initSwipeRefresh() {
         if (mSwipeRefresh != null) {
@@ -132,39 +120,42 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
      * 显示加载动画
      */
     @Override
-    public void showLoading(){
-        if(mEmptyLayout!=null){
+    public void showLoading() {
+        if (mEmptyLayout != null) {
             mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_LOADING);
-            SwipeRefreshHelper.enableRefresh(mSwipeRefresh,false);
+            SwipeRefreshHelper.enableRefresh(mSwipeRefresh, false);
         }
     }
+
     /**
      * 隐藏加载
      */
     @Override
-    public void hideLoading(){
-        if(mEmptyLayout!=null){
+    public void hideLoading() {
+        if (mEmptyLayout != null) {
             mEmptyLayout.hide();
-            SwipeRefreshHelper.enableRefresh(mSwipeRefresh,true);
-            SwipeRefreshHelper.controlRefresh(mSwipeRefresh,false);
+            SwipeRefreshHelper.enableRefresh(mSwipeRefresh, true);
+            SwipeRefreshHelper.controlRefresh(mSwipeRefresh, false);
         }
     }
+
     /**
      * 显示网络错误，modify 对网络异常在 BaseActivity 和 BaseFragment 统一处理
      */
     @Override
-    public void showNetError(){
-        if(mEmptyLayout!=null){
+    public void showNetError() {
+        if (mEmptyLayout != null) {
             mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_NET);
             mEmptyLayout.setRetryListener(this);
         }
     }
+
     /**
      * 完成刷新, 新增控制刷新
      */
     @Override
-    public void finishRefresh(){
-        if(mSwipeRefresh!=null){
+    public void finishRefresh() {
+        if (mSwipeRefresh != null) {
             mSwipeRefresh.setRefreshing(false);
         }
     }
@@ -174,13 +165,14 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
         updateViews(false);
     }
 
+
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
     @Override
     @NonNull
     @CheckResult
     public final Observable<ActivityEvent> lifecycle() {
-        return lifecycleSubject.asObservable();
+        return lifecycleSubject.hide();
     }
 
     @Override
@@ -195,6 +187,19 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
     @CheckResult
     public final <T> LifecycleTransformer<T> bindToLifecycle() {
         return RxLifecycleAndroid.bindActivity(lifecycleSubject);
+    }
+
+    @Override
+    @CallSuper
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        lifecycleSubject.onNext(ActivityEvent.CREATE);
+        setContentView(attachLayoutRes());
+        ButterKnife.bind(this);
+        initInjector();
+        initViews();
+        initSwipeRefresh();
+        updateViews(false);
     }
 
     @Override
@@ -231,6 +236,5 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
         lifecycleSubject.onNext(ActivityEvent.DESTROY);
         super.onDestroy();
     }
-
 
 }

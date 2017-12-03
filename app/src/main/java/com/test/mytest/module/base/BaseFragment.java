@@ -17,19 +17,19 @@ import com.test.mytest.application.MyApp;
 import com.test.mytest.injector.components.ApplicationComponent;
 import com.test.mytest.utils.SwipeRefreshHelper;
 import com.test.mytest.widget.EmptyLayout;
-import com.trello.rxlifecycle.LifecycleProvider;
-import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.RxLifecycle;
-import com.trello.rxlifecycle.android.FragmentEvent;
-import com.trello.rxlifecycle.android.RxLifecycleAndroid;
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.RxLifecycle;
+import com.trello.rxlifecycle2.android.FragmentEvent;
+import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 import me.yokeyword.fragmentation.SupportFragment;
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
 
 /**
  * Created by admin on 2017-11-22.
@@ -62,42 +62,6 @@ public abstract class BaseFragment<T extends IBasePresenter> extends SupportFrag
 
     @Inject
     protected T mPresenter;
-
-    private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
-
-    @Override
-    @NonNull
-    @CheckResult
-    public final Observable<FragmentEvent> lifecycle() {
-        return lifecycleSubject.asObservable();
-    }
-
-    @Override
-    @NonNull
-    @CheckResult
-    public final <T> LifecycleTransformer<T> bindUntilEvent(@NonNull FragmentEvent event) {
-        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
-    }
-
-    @Override
-    @NonNull
-    @CheckResult
-    public final <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycleAndroid.bindFragment(lifecycleSubject);
-    }
-
-    @Override
-    public void onAttach(android.app.Activity activity) {
-        super.onAttach(activity);
-        lifecycleSubject.onNext(FragmentEvent.ATTACH);
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        lifecycleSubject.onNext(FragmentEvent.CREATE);
-        mContext = getActivity();
-    }
 
     @Nullable
     @Override
@@ -211,6 +175,42 @@ public abstract class BaseFragment<T extends IBasePresenter> extends SupportFrag
 
     protected ApplicationComponent getApplicationComponent() {
         return MyApp.getApplicationComponent();
+    }
+
+    private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
+
+    @Override
+    @NonNull
+    @CheckResult
+    public final Observable<FragmentEvent> lifecycle() {
+        return lifecycleSubject.hide();
+    }
+
+    @Override
+    @NonNull
+    @CheckResult
+    public final <T> LifecycleTransformer<T> bindUntilEvent(@NonNull FragmentEvent event) {
+        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
+    }
+
+    @Override
+    @NonNull
+    @CheckResult
+    public final <T> LifecycleTransformer<T> bindToLifecycle() {
+        return RxLifecycleAndroid.bindFragment(lifecycleSubject);
+    }
+
+    @Override
+    public void onAttach(android.app.Activity activity) {
+        super.onAttach(activity);
+        lifecycleSubject.onNext(FragmentEvent.ATTACH);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        lifecycleSubject.onNext(FragmentEvent.CREATE);
+        mContext = getActivity();
     }
 
     @Override

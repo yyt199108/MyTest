@@ -3,6 +3,7 @@ package com.test.mytest.injector.components;
 import android.content.Context;
 
 import com.test.mytest.api.IPhotoApi;
+import com.test.mytest.api.model.CommentModel;
 import com.test.mytest.api.model.PhotoModel;
 import com.test.mytest.injector.module.ApplicationModule;
 
@@ -21,4 +22,6 @@ public interface ApplicationComponent {
     Context getContext();
 
     void inject(PhotoModel photoModel);
+
+    void inject(CommentModel commentModel);
 }
