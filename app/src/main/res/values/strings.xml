@@ -7,4 +7,5 @@
     <string name="share">分享</string>
     <string name="hot_comment">热门评论</string>
     <string name="look_at_more_comment">查看更多评论</string>
+    <string name="already_liked">已赞</string>
 </resources>

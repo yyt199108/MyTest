@@ -32,7 +32,9 @@ public class PhotoListPresenter implements PhotoListContract.Presenter {
         if (!isRefresh) {
             mView.showLoading();
         }
-        photoModel.getMainPetPhotoList().subscribe(new Observer<BaseListRes<PhotoInfoBean>>() {
+        photoModel.getMainPetPhotoList()
+                .compose(mView.bindLifecycle())
+                .subscribe(new Observer<BaseListRes<PhotoInfoBean>>() {
             @Override
             public void onError(Throwable e) {
                 KLog.e(e);

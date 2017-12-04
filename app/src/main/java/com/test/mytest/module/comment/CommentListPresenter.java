@@ -35,6 +35,7 @@ public class CommentListPresenter implements CommentListContract.Presenter {
             mView.showLoading();
         }
         mModel.getPhotoDetailCommentList()
+                .compose(mView.bindLifecycle())
                 .subscribeOn(Schedulers.io())
                 .map(new Function<BaseListRes<CommentBean>, List<CommentBean>>() {
                     @Override

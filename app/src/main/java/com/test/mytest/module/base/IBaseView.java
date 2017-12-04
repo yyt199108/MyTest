@@ -1,5 +1,7 @@
 package com.test.mytest.module.base;
 
+import com.trello.rxlifecycle2.LifecycleTransformer;
+
 /**
  * Created by admin on 2017-11-21.
  * 基础BaseView接口
@@ -22,4 +24,9 @@ public interface IBaseView {
      * 完成刷新, 新增控制刷新
      */
     void finishRefresh();
+
+    /**
+     * 绑定生命周期
+     */
+    LifecycleTransformer bindLifecycle();
 }

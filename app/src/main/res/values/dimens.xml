@@ -9,4 +9,6 @@
     <dimen name="little_text_size">8sp</dimen>
     <dimen name="comment_photo_size">50dp</dimen>
     <dimen name="dp_20">20dp</dimen>
+    <dimen name="red_button_padding">2dp</dimen>
+    <dimen name="red_button_radius">2dp</dimen>
 </resources>

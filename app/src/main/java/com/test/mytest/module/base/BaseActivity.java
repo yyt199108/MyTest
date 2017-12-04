@@ -1,5 +1,6 @@
 package com.test.mytest.module.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
@@ -8,7 +9,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.test.mytest.R;
@@ -19,6 +23,8 @@ import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.RxLifecycle;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -161,6 +167,11 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
     }
 
     @Override
+    public LifecycleTransformer bindLifecycle() {
+        return bindToLifecycle();
+    }
+
+    @Override
     public void onRetry() {
         updateViews(false);
     }
@@ -236,5 +247,53 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
         lifecycleSubject.onNext(ActivityEvent.DESTROY);
         super.onDestroy();
     }
+    private ArrayList<MyTouchListener> myTouchListenerList = new ArrayList<>();
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        //将触摸事件传递给回调函数 fragment触摸事件分发，将触摸事件分发给每个能够响应的fragment
+        for (MyTouchListener listener : myTouchListenerList) {
+            if (listener != null) {
+                listener.onTouch(ev);
+            }
+        }
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (isShouldHideKeyboard(v, ev)) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    // 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘
+    private boolean isShouldHideKeyboard(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0],
+                    top = l[1],
+                    bottom = top + v.getHeight(),
+                    right = left + v.getWidth();
+            return !(event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom);
+        }
+        return false;
+    }
+
+    public interface MyTouchListener {
+        void onTouch(MotionEvent ev);
+    }
+
+    //注册回调事件
+    public void registerMyTouchListener(MyTouchListener myTouchListener) {
+        this.myTouchListenerList.add(myTouchListener);
+    }
+
+    public void unregisterMyTouchListener(MyTouchListener myTouchListener) {
+        this.myTouchListenerList.remove(myTouchListener);
+    }
 }

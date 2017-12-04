@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
-
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -13,6 +12,7 @@ import com.test.mytest.adapter.VPAdapter;
 import com.test.mytest.api.bean.TabEntity;
 import com.test.mytest.module.base.BaseFragment;
 import com.test.mytest.module.club.BBSListFragment;
+import com.test.mytest.module.mall.main.MallMainFragment;
 import com.test.mytest.module.photo.main.PhotoListFragment;
 import com.test.mytest.module.setting.SettingFragment;
 
@@ -80,6 +80,7 @@ public class HomeFragment extends BaseFragment {
     private void initHomeFragmentList() {
         fragments.add(PhotoListFragment.newInstance());
         fragments.add(BBSListFragment.newInstance());
+        fragments.add(MallMainFragment.newInstance());
         fragments.add(SettingFragment.newInstance());
     }
 

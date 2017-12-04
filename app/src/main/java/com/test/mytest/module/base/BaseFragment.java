@@ -169,6 +169,11 @@ public abstract class BaseFragment<T extends IBasePresenter> extends SupportFrag
     }
 
     @Override
+    public LifecycleTransformer bindLifecycle() {
+        return bindToLifecycle();
+    }
+
+    @Override
     public void onRetry() {
         updateViews(false);
     }

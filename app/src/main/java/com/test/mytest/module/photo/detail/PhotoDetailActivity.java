@@ -19,6 +19,7 @@ import com.test.mytest.injector.components.DaggerPhotoDetailComponent;
 import com.test.mytest.injector.module.PhotoDetailModule;
 import com.test.mytest.module.base.BaseActivity;
 import com.test.mytest.module.comment.CommentListActivity;
+import com.test.mytest.widget.CommonBottomDialog;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ import butterknife.OnClick;
  * Created by admin on 2017-11-23.
  */
 
-public class PhotoDetailActivity extends BaseActivity implements PhotoDetailContract.View {
+public class PhotoDetailActivity extends BaseActivity implements PhotoDetailContract.View, CommonBottomDialog.AddCommentLisetener {
 
     @Inject
     BaseQuickAdapter mAdapter;
@@ -47,6 +48,8 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
     TextView mTvPhotoContent;
     @BindView(R.id.sdv_photo)
     SimpleDraweeView mSdvPhoto;
+    @BindView(R.id.tv_like)
+    TextView mTvLike;
 
 
     @Override
@@ -94,14 +97,18 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
         mPresenter.getData(isRefresh);
     }
 
-    @OnClick({R.id.tv_like, R.id.sdv_pet_head_photo, R.id.tv_pet_nick, R.id.tv_do_attention,R.id.right_lay})
+    @OnClick({R.id.tv_like, R.id.sdv_pet_head_photo, R.id.tv_pet_nick, R.id.tv_do_attention
+            ,R.id.right_lay,R.id.back_img_lay,R.id.tv_comment,R.id.tv_share})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_like:
-                if (mPresenter != null) {
-                    mPresenter.getData(false);
+                //点赞
+                if (mTvLike.getText().toString().equals(getString(R.string.liked))) {
+                    mTvLike.setText(getString(R.string.already_liked));
+                    mTvLike.setTextColor(ContextCompat.getColor(this,R.color.gray));
                 } else {
-                    ToastUtils.showLongToastSafe("null");
+                    mTvLike.setText(getString(R.string.liked));
+                    mTvLike.setTextColor(ContextCompat.getColor(this,R.color.black));
                 }
                 break;
             case R.id.sdv_pet_head_photo:
@@ -112,11 +119,20 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
                 //关注
                 if (mTvAttention.getText().toString().equals("+关注")) {
                     mTvAttention.setText("取消关注");
+                    mTvAttention.setBackground(ContextCompat.getDrawable(this,R.drawable.gray_btn_selected));
                 } else {
                     mTvAttention.setText("+关注");
+                    mTvAttention.setBackground(ContextCompat.getDrawable(this,R.drawable.pink_btn_selected));
                 }
                 break;
-
+            case R.id.tv_comment:
+                //评论
+                showAddCommentDialog();
+                break;
+            case R.id.tv_share:
+                //分享
+                CommonBottomDialog.showShareDialog(this);
+                break;
             case R.id.back_img_lay:
                 finish();
                 break;
@@ -124,6 +140,10 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
                 startCommentListAct();
                 break;
         }
+    }
+
+    private void showAddCommentDialog() {
+        CommonBottomDialog.showAddCommentDialog(this,this);
     }
 
     @Override
@@ -143,7 +163,6 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
         footView.findViewById(R.id.tv_loadmore).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ToastUtils.showLongToast("加载更多");
                 startCommentListAct();
             }
         });
@@ -151,5 +170,10 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
 
     private void startCommentListAct() {
         CommentListActivity.startActivity(this, "1");
+    }
+
+    @Override
+    public void addComment(String commentContent) {
+        ToastUtils.showLongToastSafe(commentContent);
     }
 }
