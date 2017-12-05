@@ -1,11 +1,9 @@
 package com.test.mytest.module.photo.detail;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -27,7 +25,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -120,11 +117,11 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
             case R.id.tv_do_attention:
                 //关注
                 if (mTvAttention.getText().toString().equals("+关注")) {
-                    mTvAttention.setText("取消关注");
+                    mTvAttention.setText("已关注");
                     mTvAttention.setBackground(ContextCompat.getDrawable(this, R.drawable.gray_btn_selected));
                 } else {
                     mTvAttention.setText("+关注");
-                    mTvAttention.setBackground(ContextCompat.getDrawable(this, R.drawable.pink_btn_selected));
+                    mTvAttention.setBackground(ContextCompat.getDrawable(this, R.drawable.white_btn_selected));
                 }
                 break;
             case R.id.tv_comment:
@@ -180,5 +177,6 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
     @Override
     public void addComment(String commentContent) {
         ToastUtils.showLongToastSafe(commentContent);
+        startCommentListAct();
     }
 }

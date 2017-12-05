@@ -7,14 +7,11 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/sdv_share_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        fresco:roundAsCircle="true" />
-
     <TextView
         android:id="@+id/tv_share_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/red_circle_bg"
+        android:textColor="@android:color/holo_red_light"/>
 </LinearLayout>

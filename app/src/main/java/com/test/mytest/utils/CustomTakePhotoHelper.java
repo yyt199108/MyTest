@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 
+import com.blankj.utilcode.utils.LogUtils;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.compress.CompressConfig;
 import com.jph.takephoto.model.CropOptions;
@@ -64,6 +65,9 @@ public class CustomTakePhotoHelper {
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
+        file=new File(Environment.getExternalStorageDirectory(),
+                "/temp/" + System.currentTimeMillis() + ".jpg");
+        LogUtils.e("filepath",file.getPath());
         return Uri.fromFile(file);
     }
 

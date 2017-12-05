@@ -45,7 +45,9 @@ public class SettingFragment extends BaseTakePhotoFragment {
     private void initTitleView() {
         if(mTitle!=null){
             mTitle.setText("设置");
-
+        }
+        if(mBackLay!=null){
+            mBackLay.setVisibility(View.GONE);
         }
     }
 

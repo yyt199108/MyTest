@@ -35,7 +35,7 @@
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="20dp"
-            android:background="@color/colorAccent"
+            android:background="@drawable/white_btn_selected"
             android:text="+关注" />
     </LinearLayout>
 
@@ -45,7 +45,13 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/dp_10"
         android:text="你好啊，深邃的夜空。" />
-
+    <TextView
+        android:layout_width="match_parent"
+        android:gravity="right"
+        android:text="3小时前"
+        android:textSize="@dimen/sp_12"
+        android:paddingRight="@dimen/dp_4"
+        android:layout_height="wrap_content" />
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdv_photo"
         android:layout_width="match_parent"

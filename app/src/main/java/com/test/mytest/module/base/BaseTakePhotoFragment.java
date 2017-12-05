@@ -126,6 +126,8 @@ public abstract class BaseTakePhotoFragment<T extends IBasePresenter> extends Ba
         });
 
         dialog.setContentView(dialogView);
+        dialog.getDelegate().findViewById(android.support.design.R.id.design_bottom_sheet)
+                .setBackgroundResource(android.R.color.transparent);
         dialog.show();
     }
 }

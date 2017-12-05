@@ -3,6 +3,7 @@ package com.test.mytest.module.comment;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.test.mytest.R;
@@ -14,6 +15,8 @@ import com.test.mytest.module.base.BaseActivity;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import butterknife.OnClick;
 
 /**
  * Created by yyt19 on 2017/11/28.
@@ -97,5 +100,13 @@ public class CommentListActivity extends BaseActivity implements CommentListCont
         mAdapter.loadMoreEnd();
     }
 
+    @OnClick({R.id.back_img_lay})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.back_img_lay:
+                finish();
+                break;
+        }
+    }
 
 }

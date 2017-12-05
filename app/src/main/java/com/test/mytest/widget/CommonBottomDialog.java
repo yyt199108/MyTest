@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.blankj.utilcode.utils.KeyboardUtils;
+import com.blankj.utilcode.utils.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.test.mytest.R;
 import com.test.mytest.adapter.RewardAdapter;
 import com.test.mytest.adapter.ShareAdapter;
@@ -33,7 +35,7 @@ public class CommonBottomDialog {
     }
 
     public static void showAddCommentDialog(final Context context, final AddCommentLisetener lisetener) {
-        BottomSheetDialog addCommentDialog = new BottomSheetDialog(context);
+        final BottomSheetDialog addCommentDialog = new BottomSheetDialog(context);
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.dialog_add_comment, null);
         final EditText etApplyComment = view.findViewById(R.id.et_apply_comment);
@@ -43,6 +45,7 @@ public class CommonBottomDialog {
                 if (lisetener != null) {
                     lisetener.addComment(etApplyComment.getText().toString());
                 }
+                addCommentDialog.dismiss();
             }
         });
         etApplyComment.setFocusable(true);
@@ -62,26 +65,32 @@ public class CommonBottomDialog {
     }
 
     public static void showShareDialog(final Context context) {
-//        BottomSheetDialog addCommentDialog = new BottomSheetDialog(context,R.style.BottomSheetDialogStyle);
-        BottomSheetDialog addCommentDialog = new BottomSheetDialog(context);
-//        addCommentDialog.getWindow().findViewById(R.id.design_botttom_sheet)
-//                .setBackgroundResource(android.R.color.transparent);
-//        addCommentDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-//
-//        addCommentDialog.getDelegate().findViewById(android.support.design.R.id.design_bottom_sheet)
-//                .setBackgroundColor(mActivity.getResources().getColor(R.color.transparent));
+        final BottomSheetDialog addCommentDialog = new BottomSheetDialog(context);
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.dialog_share, null);
 
         RecyclerView recyclerView = view.findViewById(R.id.recy_view);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
 
-        List<ImageBean> imageBeans = new ArrayList<>();
-        imageBeans.add(new ImageBean(R.drawable.ic_pet1, "微信朋友圈", 1));
-        imageBeans.add(new ImageBean(R.drawable.ic_pet1, "发送给朋友", 1));
-        imageBeans.add(new ImageBean(R.drawable.ic_pet1, "微博", 1));
+        final List<ImageBean> imageBeans = new ArrayList<>();
+        imageBeans.add(new ImageBean(R.drawable.pengyouquan, "微信朋友圈", 1));
+        imageBeans.add(new ImageBean(R.drawable.weixin, "发送给朋友", 1));
+        imageBeans.add(new ImageBean(R.drawable.weibo, "微博", 1));
         ShareAdapter adapter = new ShareAdapter(imageBeans);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ToastUtils.showLongToastSafe("分享"+imageBeans.get(position).imageDescribe);
+                addCommentDialog.dismiss();
+            }
+        });
+        view.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addCommentDialog.dismiss();
+            }
+        });
         addCommentDialog.setContentView(view);
         addCommentDialog.getDelegate().findViewById(android.support.design.R.id.design_bottom_sheet)
                 .setBackgroundResource(android.R.color.transparent);
@@ -89,24 +98,36 @@ public class CommonBottomDialog {
     }
 
     public static void showRewardDialog(final Context context) {
-        BottomSheetDialog addCommentDialog = new BottomSheetDialog(context);
-//        View view = LayoutInflater.from(context)
-//                .inflate(R.layout.dialog_reward, null);
+        final BottomSheetDialog rewardDialog = new BottomSheetDialog(context);
+        rewardDialog.setContentView(R.layout.dialog_reward);
+        rewardDialog.getDelegate().findViewById(android.support.design.R.id.design_bottom_sheet)
+                .setBackgroundResource(android.R.color.transparent);
 
-
-        addCommentDialog.setContentView(R.layout.dialog_reward);
-
-        RecyclerView recyclerView = addCommentDialog.findViewById(R.id.recy_view);
+        RecyclerView recyclerView = rewardDialog.findViewById(R.id.recy_view);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 1, LinearLayoutManager.HORIZONTAL, false));
 
-        List<ImageBean> imageBeans = new ArrayList<>();
-        imageBeans.add(new ImageBean(R.drawable.ic_pet1, "1元", 1));
-        imageBeans.add(new ImageBean(R.drawable.ic_pet1, "6元", 1));
-        imageBeans.add(new ImageBean(R.drawable.ic_pet1, "10元", 1));
-        imageBeans.add(new ImageBean(R.drawable.ic_pet1, "20元", 1));
-        imageBeans.add(new ImageBean(R.drawable.ic_pet1, "100元", 1));
-        RewardAdapter adapter = new RewardAdapter(imageBeans);
+        final List<String> stringList = new ArrayList<>();
+        stringList.add("1元");
+        stringList.add("6元");
+        stringList.add("8元");
+        stringList.add("50元");
+        stringList.add("100元");
+        stringList.add("500元");
+        RewardAdapter adapter = new RewardAdapter(stringList);
         recyclerView.setAdapter(adapter);
-        addCommentDialog.show();
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ToastUtils.showLongToastSafe("打赏"+stringList.get(position));
+                rewardDialog.dismiss();
+            }
+        });
+        rewardDialog.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rewardDialog.dismiss();
+            }
+        });
+        rewardDialog.show();
     }
 }

@@ -1,80 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <include layout="@layout/comm_title_text"/>
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/comm_title_text" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10">
+
         <com.facebook.drawee.view.SimpleDraweeView
-            android:padding="@dimen/dp_10"
             android:id="@+id/sdv_pet_head_photo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            fresco:roundAsCircle="true"/>
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            fresco:actualImageResource="@drawable/ic_pet5"
+            fresco:roundAsCircle="true" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="布布"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="种类：布偶"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="年龄：3岁"/>
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:text="年年" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    fresco:actualImageResource="@drawable/ic_pet_male" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_4"
+                android:text="种 类：布偶"
+                android:textSize="@dimen/sp_12" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="年龄：3岁"
+                android:textSize="@dimen/sp_12" />
         </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/location"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="北京/海淀"/>
     </LinearLayout>
 
     <LinearLayout
+        android:padding="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/camera"/>
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:padding="@dimen/dp_10"
-            android:id="@+id/sdv_pet_photo1"
-            android:layout_width="40dp"
-            android:layout_height="40dp"/>
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:padding="@dimen/dp_10"
-            android:id="@+id/sdv_pet_photo2"
-            android:layout_width="40dp"
-            android:layout_height="40dp"/>
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:padding="@dimen/dp_10"
-            android:id="@+id/sdv_pet_photo3"
-            android:layout_width="40dp"
-            android:layout_height="40dp"/>
-        <ImageView
+            android:text="地区" />
+
+        <TextView
+            android:layout_marginLeft="26dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="北京 大兴" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@color/gray"/>
+    <LinearLayout
+        android:padding="@dimen/dp_10"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="相册" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_marginLeft="26dp"
+            android:id="@+id/sdv_pet_photo1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            fresco:actualImageResource="@drawable/ic_pet5"
+             />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdv_pet_photo2"
+            android:layout_marginLeft="@dimen/dp_10"
+            fresco:actualImageResource="@drawable/ic_pet4"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_marginLeft="@dimen/dp_10"
+            fresco:actualImageResource="@drawable/ic_pet1"
+            android:id="@+id/sdv_pet_photo3"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            />
+
+        <ImageView
+            android:layout_marginLeft="@dimen/dp_20"
+            android:src="@drawable/arrow_right"
+            android:padding="@dimen/dp_10"
+            android:layout_width="30dp"
+            android:layout_height="match_parent" />
     </LinearLayout>
 </LinearLayout>

@@ -14,15 +14,14 @@ import java.util.List;
  * Created by admin on 2017-12-05.
  */
 
-public class RewardAdapter extends BaseQuickAdapter<ImageBean,BaseViewHolder> {
+public class RewardAdapter extends BaseQuickAdapter<String,BaseViewHolder> {
 
-    public RewardAdapter(@Nullable List<ImageBean> data) {
+    public RewardAdapter(@Nullable List<String> data) {
         super(R.layout.adapter_reward_item, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, ImageBean item) {
-        ((SimpleDraweeView)helper.getView(R.id.sdv_share_image)).setActualImageResource(item.imageResId);
-        helper.setText(R.id.tv_share_name, item.imageDescribe);
+    protected void convert(BaseViewHolder helper, String item) {
+        helper.setText(R.id.tv_share_name, item);
     }
 }

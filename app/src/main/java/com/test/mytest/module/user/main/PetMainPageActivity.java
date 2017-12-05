@@ -2,9 +2,12 @@ package com.test.mytest.module.user.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 
 import com.test.mytest.R;
 import com.test.mytest.module.base.BaseActivity;
+
+import butterknife.OnClick;
 
 /**
  * Created by admin on 2017-12-05.
@@ -31,7 +34,13 @@ public class PetMainPageActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+        initTitle();
+    }
 
+    private void initTitle() {
+        if (mTitle != null) {
+            mTitle.setText("宠物详情");
+        }
     }
 
     @Override
@@ -39,4 +48,12 @@ public class PetMainPageActivity extends BaseActivity {
 
     }
 
+    @OnClick({R.id.back_img_lay})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.back_img_lay:
+                finish();
+                break;
+        }
+    }
 }

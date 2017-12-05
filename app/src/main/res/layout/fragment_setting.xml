@@ -26,28 +26,54 @@
                 android:background="@color/black"/>
             <com.allen.library.SuperTextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></com.allen.library.SuperTextView>
+                android:layout_height="50dp"
+                stv:sLeftTextSize="14sp"
+                stv:sLeftTextString="名字"
+                stv:sRightIconRes="@drawable/arrow_right"
+                stv:sDividerLineType="bottom"
+                stv:sRightTextColor="#000000"
+                stv:sRightTextSize="12sp"
+                stv:sRightTextString="" />
             <com.allen.library.SuperTextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 stv:sLeftTextSize="14sp"
-                stv:sLeftTextString="客服热线"
-                stv:sRightIconRes="@drawable/ic_arrow_back"
+                stv:sLeftTextString="种类"
+                stv:sRightIconRes="@drawable/arrow_right"
                 stv:sDividerLineType="bottom"
                 stv:sRightTextColor="#000000"
                 stv:sRightTextSize="12sp"
-                stv:sRightTextString="4006179999" />
+                stv:sRightTextString="" />
             <com.allen.library.SuperTextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 stv:sLeftTextSize="14sp"
-                android:layout_marginTop="10dp"
-                stv:sLeftTextString="客服热线"
-                stv:sRightIconRes="@drawable/ic_arrow_back"
+                stv:sLeftTextString="性别"
+                stv:sRightIconRes="@drawable/arrow_right"
                 stv:sDividerLineType="bottom"
                 stv:sRightTextColor="#000000"
                 stv:sRightTextSize="12sp"
-                stv:sRightTextString="4006179999" />
+                stv:sRightTextString="" />
+            <com.allen.library.SuperTextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                stv:sLeftTextSize="14sp"
+                stv:sLeftTextString="年龄"
+                stv:sRightIconRes="@drawable/arrow_right"
+                stv:sDividerLineType="bottom"
+                stv:sRightTextColor="#000000"
+                stv:sRightTextSize="12sp"
+                stv:sRightTextString="" />
+            <com.allen.library.SuperTextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                stv:sLeftTextSize="14sp"
+                stv:sLeftTextString="所在地"
+                stv:sRightIconRes="@drawable/arrow_right"
+                stv:sDividerLineType="bottom"
+                stv:sRightTextColor="#000000"
+                stv:sRightTextSize="12sp"
+                stv:sRightTextString="" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
