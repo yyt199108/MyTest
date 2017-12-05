@@ -8,4 +8,6 @@
     <string name="hot_comment">热门评论</string>
     <string name="look_at_more_comment">查看更多评论</string>
     <string name="already_liked">已赞</string>
+    <string name="location">地区：</string>
+    <string name="camera">相册</string>
 </resources>

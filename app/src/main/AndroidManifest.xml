@@ -29,6 +29,7 @@
         </activity>
         <activity android:name=".module.photo.detail.PhotoDetailActivity"/>
         <activity android:name=".module.comment.CommentListActivity"/>
+        <activity android:name=".module.user.main.PetMainPageActivity"/>
     </application>
 
 </manifest>

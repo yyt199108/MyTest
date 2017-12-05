@@ -19,6 +19,7 @@ import com.test.mytest.injector.components.DaggerPhotoDetailComponent;
 import com.test.mytest.injector.module.PhotoDetailModule;
 import com.test.mytest.module.base.BaseActivity;
 import com.test.mytest.module.comment.CommentListActivity;
+import com.test.mytest.module.user.main.PetMainPageActivity;
 import com.test.mytest.widget.CommonBottomDialog;
 
 import java.util.List;
@@ -98,31 +99,32 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
     }
 
     @OnClick({R.id.tv_like, R.id.sdv_pet_head_photo, R.id.tv_pet_nick, R.id.tv_do_attention
-            ,R.id.right_lay,R.id.back_img_lay,R.id.tv_comment,R.id.tv_share})
+            , R.id.right_lay, R.id.back_img_lay, R.id.tv_comment, R.id.tv_share, R.id.tv_reward})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_like:
                 //点赞
                 if (mTvLike.getText().toString().equals(getString(R.string.liked))) {
                     mTvLike.setText(getString(R.string.already_liked));
-                    mTvLike.setTextColor(ContextCompat.getColor(this,R.color.gray));
+                    mTvLike.setTextColor(ContextCompat.getColor(this, R.color.gray));
                 } else {
                     mTvLike.setText(getString(R.string.liked));
-                    mTvLike.setTextColor(ContextCompat.getColor(this,R.color.black));
+                    mTvLike.setTextColor(ContextCompat.getColor(this, R.color.black));
                 }
                 break;
             case R.id.sdv_pet_head_photo:
             case R.id.tv_pet_nick:
                 //点击头像和名称，跳到详情
+                PetMainPageActivity.startMainAct(this, "1");
                 break;
             case R.id.tv_do_attention:
                 //关注
                 if (mTvAttention.getText().toString().equals("+关注")) {
                     mTvAttention.setText("取消关注");
-                    mTvAttention.setBackground(ContextCompat.getDrawable(this,R.drawable.gray_btn_selected));
+                    mTvAttention.setBackground(ContextCompat.getDrawable(this, R.drawable.gray_btn_selected));
                 } else {
                     mTvAttention.setText("+关注");
-                    mTvAttention.setBackground(ContextCompat.getDrawable(this,R.drawable.pink_btn_selected));
+                    mTvAttention.setBackground(ContextCompat.getDrawable(this, R.drawable.pink_btn_selected));
                 }
                 break;
             case R.id.tv_comment:
@@ -132,6 +134,9 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
             case R.id.tv_share:
                 //分享
                 CommonBottomDialog.showShareDialog(this);
+                break;
+            case R.id.tv_reward:
+                CommonBottomDialog.showRewardDialog(this);
                 break;
             case R.id.back_img_lay:
                 finish();
@@ -143,7 +148,7 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
     }
 
     private void showAddCommentDialog() {
-        CommonBottomDialog.showAddCommentDialog(this,this);
+        CommonBottomDialog.showAddCommentDialog(this, this);
     }
 
     @Override
