@@ -7,8 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.blankj.utilcode.utils.KeyboardUtils;
 import com.blankj.utilcode.utils.ToastUtils;
@@ -81,7 +81,7 @@ public class CommonBottomDialog {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showLongToastSafe("分享"+imageBeans.get(position).imageDescribe);
+                ToastUtils.showLongToastSafe("分享" + imageBeans.get(position).imageDescribe);
                 addCommentDialog.dismiss();
             }
         });
@@ -118,7 +118,7 @@ public class CommonBottomDialog {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.showLongToastSafe("打赏"+stringList.get(position));
+                ToastUtils.showLongToastSafe("打赏" + stringList.get(position));
                 rewardDialog.dismiss();
             }
         });
@@ -129,5 +129,46 @@ public class CommonBottomDialog {
             }
         });
         rewardDialog.show();
+    }
+
+    public interface EditLisetener {
+        void editComplete(String editTextString, int type);
+    }
+
+    public static void showEditTextDialog(final Context context, final int type, String hintText, String titleText, final EditLisetener lisetener) {
+        final BottomSheetDialog addCommentDialog = new BottomSheetDialog(context);
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.dialog_edit, null);
+        ((TextView) view.findViewById(R.id.tv_title)).setText(titleText);
+        final EditText etApplyComment = view.findViewById(R.id.et_editshow);
+        etApplyComment.setHint(hintText);
+        view.findViewById(R.id.tv_edit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etApplyComment.getText().toString().trim().length() > 0) {
+                    if (lisetener != null) {
+                        lisetener.editComplete(etApplyComment.getText().toString(), type);
+                    }
+
+                    addCommentDialog.dismiss();
+                } else {
+                    ToastUtils.showLongToastSafe("不能为空");
+                }
+            }
+        });
+        etApplyComment.setFocusable(true);
+        etApplyComment.setFocusableInTouchMode(true);
+        etApplyComment.requestFocus();
+
+        Observable.timer(110, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        KeyboardUtils.showSoftInput(etApplyComment);
+                    }
+                });
+
+        addCommentDialog.setContentView(view);
+        addCommentDialog.show();
     }
 }

@@ -171,12 +171,13 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
     }
 
     private void startCommentListAct() {
-        CommentListActivity.startActivity(this, "1");
+        CommentListActivity.startCommentListActivity(this, "1");
     }
 
     @Override
     public void addComment(String commentContent) {
         ToastUtils.showLongToastSafe(commentContent);
-        startCommentListAct();
+        CommentListActivity.startCommentListActivity(this, "1",commentContent);
+
     }
 }

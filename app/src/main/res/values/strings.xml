@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyTest</string>
+    <string name="app_name">Pet</string>
     <string name="menu_pic">图集</string>
     <string name="liked">点赞</string>
     <string name="comment">评论</string>

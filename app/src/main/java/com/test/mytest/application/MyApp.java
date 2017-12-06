@@ -16,7 +16,7 @@ import com.test.mytest.injector.module.ApplicationModule;
 
 public class MyApp extends Application {
 
-    private static Context mContext;
+    public static Context mContext;
 
     private static ApplicationComponent mApplicationComponent;
 

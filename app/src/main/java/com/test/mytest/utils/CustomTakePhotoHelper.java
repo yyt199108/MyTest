@@ -53,11 +53,16 @@ public class CustomTakePhotoHelper {
     //压缩
     private static void configCompress(TakePhoto takePhoto) {
         CompressConfig config;
-        LubanOptions options = new LubanOptions.Builder()
+//        LubanOptions options = new LubanOptions.Builder()
+//                .setMaxSize(102400)
+//                .create();
+//        config = CompressConfig.ofLuban(options);
+//        config.enableReserveRaw(true);//是否保留原文件
+
+        config=new CompressConfig.Builder()
                 .setMaxSize(102400)
+                .enableReserveRaw(true)
                 .create();
-        config = CompressConfig.ofLuban(options);
-        config.enableReserveRaw(true);//是否保留原文件
         takePhoto.onEnableCompress(config, true);
     }
 

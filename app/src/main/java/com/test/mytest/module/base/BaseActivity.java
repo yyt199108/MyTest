@@ -1,6 +1,7 @@
 package com.test.mytest.module.base;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
@@ -204,6 +205,7 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
     @CallSuper
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//竖屏
         lifecycleSubject.onNext(ActivityEvent.CREATE);
         setContentView(attachLayoutRes());
         ButterKnife.bind(this);

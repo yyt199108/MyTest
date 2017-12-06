@@ -3,7 +3,9 @@ package com.test.mytest.module.comment;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.test.mytest.R;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -24,11 +27,19 @@ import butterknife.OnClick;
 
 public class CommentListActivity extends BaseActivity implements CommentListContract.View {
     private static final String TAG_COMMENT_ID = "commentIdTag";
+    private static final String TAG_COMMENT_CONTENT = "commentContentTag";
 
     @Inject
     BaseQuickAdapter mAdapter;
 
-    public static void startActivity(Context fromContext, String commentId) {
+    public static void startCommentListActivity(Context fromContext, String commentId, String commentContent) {
+        Intent intent = new Intent(fromContext, CommentListActivity.class);
+        intent.putExtra(TAG_COMMENT_ID, commentId);
+        intent.putExtra(TAG_COMMENT_CONTENT, commentContent);
+        fromContext.startActivity(intent);
+    }
+
+    public static void startCommentListActivity(Context fromContext, String commentId) {
         Intent intent = new Intent(fromContext, CommentListActivity.class);
         intent.putExtra(TAG_COMMENT_ID, commentId);
         fromContext.startActivity(intent);
@@ -83,6 +94,23 @@ public class CommentListActivity extends BaseActivity implements CommentListCont
     @Override
     public void loadData(List<CommentBean> data) {
         mAdapter.setNewData(data);
+        if(getIntent().hasExtra(TAG_COMMENT_CONTENT)&& !TextUtils.isEmpty(getIntent().getStringExtra(TAG_COMMENT_CONTENT))){
+            String commentContent = getIntent().getStringExtra(TAG_COMMENT_CONTENT);
+            adapterAddComment(commentContent);
+        }
+    }
+
+    private void adapterAddComment(String commentContent){
+        CommentBean commentBean=(CommentBean)mAdapter.getItem(3);
+        commentBean.showCommentTypeTag=false;
+        commentBean.commentTypeName = "最新评论";
+
+        CommentBean newComment=new CommentBean();
+        newComment.showCommentTypeTag=true;
+        newComment.commentTypeName = "最新评论";
+        newComment.commentContent=commentContent;
+        mAdapter.addData(3,newComment);
+        mAdapter.notifyItemChanged(4);
     }
 
     @Override
@@ -100,11 +128,18 @@ public class CommentListActivity extends BaseActivity implements CommentListCont
         mAdapter.loadMoreEnd();
     }
 
-    @OnClick({R.id.back_img_lay})
+    @BindView(R.id.et_apply_comment)
+    EditText mEtComment;
+
+    @OnClick({R.id.back_img_lay,R.id.tv_apply})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.back_img_lay:
                 finish();
+                break;
+            case R.id.tv_apply:
+                adapterAddComment(mEtComment.getText().toString());
+                mEtComment.setText("");
                 break;
         }
     }
