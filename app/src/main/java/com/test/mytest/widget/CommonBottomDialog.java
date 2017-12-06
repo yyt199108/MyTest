@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,6 +21,8 @@ import com.test.mytest.api.bean.ImageBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -52,13 +55,22 @@ public class CommonBottomDialog {
         etApplyComment.setFocusableInTouchMode(true);
         etApplyComment.requestFocus();
 
-        Observable.timer(110, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        KeyboardUtils.showSoftInput(etApplyComment);
-                    }
-                });
+//        Observable.timer(110, TimeUnit.MILLISECONDS)
+//                .subscribe(new Consumer<Long>() {
+//                    @Override
+//                    public void accept(Long aLong) throws Exception {
+//                        KeyboardUtils.showSoftInput(etApplyComment);
+//                    }
+//                });
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+            }
+        }, 110);
 
         addCommentDialog.setContentView(view);
         addCommentDialog.show();
@@ -103,7 +115,7 @@ public class CommonBottomDialog {
         rewardDialog.getDelegate().findViewById(android.support.design.R.id.design_bottom_sheet)
                 .setBackgroundResource(android.R.color.transparent);
 
-        RecyclerView recyclerView = rewardDialog.findViewById(R.id.recy_view);
+        RecyclerView recyclerView = (RecyclerView) rewardDialog.findViewById(R.id.recy_view);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 1, LinearLayoutManager.HORIZONTAL, false));
 
         final List<String> stringList = new ArrayList<>();
