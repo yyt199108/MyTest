@@ -85,4 +85,10 @@ dependencies {
 
     //textview
     compile 'com.github.lygttpod:SuperTextView:2.1.5'
+
+    //webview
+    compile 'com.just.agentweb:agentweb:2.0.1'
+
+    //dialog
+    compile 'com.afollestad.material-dialogs:core:0.9.6.0'
 }

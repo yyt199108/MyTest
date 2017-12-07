@@ -1,8 +1,11 @@
 package com.test.mytest.module.mall.main;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.test.mytest.R;
 import com.test.mytest.module.base.BaseFragment;
 import com.test.mytest.widget.CommonBottomDialog;
@@ -47,6 +50,18 @@ public class MallMainFragment extends BaseFragment implements CommonBottomDialog
         switch (view.getId()) {
             case R.id.btn_test:
                 CommonBottomDialog.showAddCommentDialog(getActivity(), this);
+                new MaterialDialog.Builder(mContext)
+                        .title(getString(R.string.goto_taobao_title))
+                        .content(R.string.goto_taobao)
+                        .positiveText("是")
+                        .negativeText("否")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                            }
+                        })
+                        .show();
                 break;
         }
     }
