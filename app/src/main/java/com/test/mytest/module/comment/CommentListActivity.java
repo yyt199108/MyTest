@@ -9,10 +9,12 @@ import android.widget.EditText;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.test.mytest.R;
+import com.test.mytest.api.bean.AccountBean;
 import com.test.mytest.api.bean.CommentBean;
 import com.test.mytest.injector.components.DaggerCommentListComponent;
 import com.test.mytest.injector.module.CommentListModule;
 import com.test.mytest.module.base.BaseActivity;
+import com.test.mytest.utils.PrefUtils;
 
 import java.util.List;
 
@@ -105,10 +107,18 @@ public class CommentListActivity extends BaseActivity implements CommentListCont
         commentBean.showCommentTypeTag=false;
         commentBean.commentTypeName = "最新评论";
 
+
+
         CommentBean newComment=new CommentBean();
         newComment.showCommentTypeTag=true;
         newComment.commentTypeName = "最新评论";
         newComment.commentContent=commentContent;
+        AccountBean accountBean = PrefUtils.getUserInfo();
+        if(accountBean!=null){
+            newComment.nickName=accountBean.petName;
+            newComment.commentLocation=accountBean.location;
+        }
+        newComment.createTime = "刚刚";
         mAdapter.addData(3,newComment);
         mAdapter.notifyItemChanged(4);
     }

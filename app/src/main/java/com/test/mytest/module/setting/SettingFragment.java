@@ -1,11 +1,13 @@
 package com.test.mytest.module.setting;
 
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.allen.library.SuperTextView;
+import com.blankj.utilcode.utils.LocationUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jph.takephoto.model.TResult;
 import com.test.mytest.R;
@@ -43,6 +45,7 @@ public class SettingFragment extends BaseTakePhotoFragment implements CommonBott
     @BindView(R.id.stv_location)
     SuperTextView mStvLocation;
     private AccountBean accountBean;
+    private String mLocationAddr;
 
     public static SettingFragment newInstance() {
         SettingFragment fragment = new SettingFragment();
@@ -105,7 +108,24 @@ public class SettingFragment extends BaseTakePhotoFragment implements CommonBott
                 CommonBottomDialog.showEditTextDialog(mContext, TYPE_LOCATION, TextUtils.isEmpty(rightString) ? "修改地址" : rightString, "修改地址", this);
                 break;
             case R.id.stv_age:
+                LocationUtils.register(100, 100, new LocationUtils.OnLocationChangeListener() {
+                    @Override
+                    public void getLastKnownLocation(Location location) {
+
+                    }
+
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        mLocationAddr=LocationUtils.getLocality(location.getLatitude(),location.getLongitude() );
+                    }
+
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                    }
+                });
                 rightString = mStvAge.getRightString();
+                rightString=mLocationAddr;
                 CommonBottomDialog.showEditTextDialog(mContext, TYPE_AGE, TextUtils.isEmpty(rightString) ? "修改年龄" : rightString, "修改年龄", this);
                 break;
             case R.id.stv_type:
