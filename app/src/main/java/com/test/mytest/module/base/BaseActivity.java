@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.test.mytest.R;
+import com.test.mytest.application.MyApp;
+import com.test.mytest.injector.components.ApplicationComponent;
 import com.test.mytest.utils.SwipeRefreshHelper;
 import com.test.mytest.widget.EmptyLayout;
 import com.trello.rxlifecycle2.LifecycleProvider;
@@ -177,6 +179,10 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
         updateViews(false);
     }
 
+    protected ApplicationComponent getApplicationComponent() {
+        return MyApp.getApplicationComponent();
+    }
+
 
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
@@ -249,6 +255,7 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
         lifecycleSubject.onNext(ActivityEvent.DESTROY);
         super.onDestroy();
     }
+
     private ArrayList<MyTouchListener> myTouchListenerList = new ArrayList<>();
 
     @Override

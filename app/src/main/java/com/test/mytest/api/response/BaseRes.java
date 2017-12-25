@@ -7,4 +7,5 @@ package com.test.mytest.api.response;
 public class BaseRes {
     public int result;
     public String msg;
+    public int elapsedMilliseconds;
 }
