@@ -61,14 +61,14 @@ public class AgentWebFragment extends BaseFragment implements FragmentKeyDown {
     @BindView(R.id.iv_back)
     ImageView mBackImageView;
     @BindView(R.id.iv_finish)
-    ImageView mFinishImageView;
+    protected ImageView mFinishImageView;
     @BindView(R.id.iv_more)
     ImageView mMoreImageView;
 
     @BindView(R.id.view_line)
     View mLineView;
 
-    @OnClick({R.id.iv_back})
+    @OnClick({R.id.iv_back,R.id.iv_finish,R.id.iv_more})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -96,7 +96,7 @@ public class AgentWebFragment extends BaseFragment implements FragmentKeyDown {
 
     @Override
     protected void initViews() {
-        mFinishImageView.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -207,10 +207,10 @@ public class AgentWebFragment extends BaseFragment implements FragmentKeyDown {
 
     private String getUrl() {
         String target = "";
-        if (TextUtils.isEmpty(target = this.getArguments().getString(URL_KEY))) {
-            target = "";
+        if (!TextUtils.isEmpty(target = this.getArguments().getString(URL_KEY))) {
+            target = getArguments().getString(URL_KEY);
         }
-        return null;
+        return target;
     }
 
 

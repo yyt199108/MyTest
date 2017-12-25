@@ -80,7 +80,9 @@ public class HomeFragment extends BaseFragment {
     private void initHomeFragmentList() {
         fragments.add(PhotoListFragment.newInstance());
         fragments.add(BBSListFragment.newInstance());
-        fragments.add(MallMainFragment.newInstance());
+        Bundle bundle = new Bundle();
+        bundle.putString(MallMainFragment.URL_KEY, MallMainFragment.tbPath);
+        fragments.add(MallMainFragment.newInstance(bundle));
         fragments.add(SettingFragment.newInstance());
     }
 
