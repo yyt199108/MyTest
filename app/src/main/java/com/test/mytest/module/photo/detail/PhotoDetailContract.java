@@ -2,6 +2,7 @@ package com.test.mytest.module.photo.detail;
 
 import com.test.mytest.api.bean.CommentBean;
 import com.test.mytest.api.bean.PhotoDetailBean;
+import com.test.mytest.api.bean.PhotoInfoBean;
 import com.test.mytest.module.base.IBasePresenter;
 import com.test.mytest.module.base.IBaseView;
 import com.test.mytest.module.base.ILoadDataView;
@@ -18,7 +19,7 @@ public interface PhotoDetailContract {
          * 显示详情
          * @param photoDetailBean
          */
-        void loadPhotoDetailView(PhotoDetailBean photoDetailBean);
+        void loadPhotoDetailView(PhotoInfoBean photoDetailBean);
 
         /**
          * 显示评论列表

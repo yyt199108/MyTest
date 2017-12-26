@@ -11,6 +11,6 @@ public class BaseListRes<T> extends BaseRes {
 
     public class DataBean<T> {
         public List<T> dataList;
-        public PageVo pageVo;
+        public PageVo page;
     }
 }

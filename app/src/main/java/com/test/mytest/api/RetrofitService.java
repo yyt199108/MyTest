@@ -10,16 +10,21 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okio.Buffer;
+import okio.BufferedSource;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -106,6 +111,29 @@ public class RetrofitService {
             //打印url信息
             KLog.w(request.url() + (request.body() != null ? "?" + _parseParams(request.body(), requestBuffer) : ""));
             final Response response = chain.proceed(request);
+            ResponseBody responseBody=response.body();
+            BufferedSource source = responseBody.source();
+            source.request(Long.MAX_VALUE); // Buffer the entire body.
+            Buffer buffer = source.buffer();
+            Charset charset = Charset.forName("UTF-8");
+            MediaType contentType=responseBody.contentType();
+            if(contentType!=null){
+                try {
+
+                    charset = contentType.charset(charset);
+                }catch (UnsupportedCharsetException e){
+                    KLog.e("Couldn't decode the response body; charset is likely malformed.");
+                    KLog.e(e.getMessage().toString());
+                    return response;
+                }
+            }
+            if(responseBody.contentLength()!=0){
+                KLog.v("--------------------------------------------开始打印返回数据----------------------------------------------------");
+                KLog.v(request.url().toString());
+                KLog.json(buffer.clone().readString(charset));
+                KLog.v("--------------------------------------------结束打印返回数据----------------------------------------------------");
+
+            }
 
             return response;
         }

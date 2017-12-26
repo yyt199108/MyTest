@@ -1,7 +1,7 @@
 package com.test.mytest.api.model;
 
 import com.test.mytest.api.ILoginApi;
-import com.test.mytest.api.bean.UserBean;
+import com.test.mytest.api.bean.AccountBean;
 import com.test.mytest.api.response.BaseBeanRes;
 import com.test.mytest.application.MyApp;
 import com.test.mytest.injector.components.DaggerApplicationComponent;
@@ -29,7 +29,7 @@ public class LoginModel {
                 .inject(this);
     }
 
-    public Observable<BaseBeanRes<UserBean>> userLogin(Map<String, String> map) {
+    public Observable<BaseBeanRes<AccountBean>> userLogin(Map<String, String> map) {
         return retrofit.create(ILoginApi.class).userLogin(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

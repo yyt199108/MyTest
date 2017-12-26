@@ -1,5 +1,7 @@
 package com.test.mytest.module.photo.detail;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -13,6 +15,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.test.mytest.R;
 import com.test.mytest.api.bean.CommentBean;
 import com.test.mytest.api.bean.PhotoDetailBean;
+import com.test.mytest.api.bean.PhotoInfoBean;
 import com.test.mytest.injector.components.DaggerPhotoDetailComponent;
 import com.test.mytest.injector.module.PhotoDetailModule;
 import com.test.mytest.module.base.BaseActivity;
@@ -33,6 +36,9 @@ import butterknife.OnClick;
 
 public class PhotoDetailActivity extends BaseActivity implements PhotoDetailContract.View, CommonBottomDialog.AddCommentLisetener {
 
+    private static final String TAG_PHOTO_ID = "tagPhotoId";
+    private int tagPhotoId;
+
     @Inject
     BaseQuickAdapter mAdapter;
 
@@ -50,6 +56,12 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
     TextView mTvLike;
 
 
+    public static void startPhotoDetailAct(Context context,int photoId){
+        Intent intent = new Intent(context,PhotoDetailActivity.class);
+        intent.putExtra(TAG_PHOTO_ID, photoId);
+        context.startActivity(intent);
+    }
+
     @Override
     protected int attachLayoutRes() {
         return R.layout.activity_photo_detail;
@@ -58,13 +70,14 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
     @Override
     protected void initInjector() {
         DaggerPhotoDetailComponent.builder()
-                .photoDetailModule(new PhotoDetailModule(this))
+                .photoDetailModule(new PhotoDetailModule(this,tagPhotoId))
                 .build()
                 .inject(this);
     }
 
     @Override
     protected void initViews() {
+        tagPhotoId = getIntent().getIntExtra(TAG_PHOTO_ID,-1);
         initTitleView();
         initRecyView();
     }
@@ -149,7 +162,7 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
     }
 
     @Override
-    public void loadPhotoDetailView(PhotoDetailBean photoDetailBean) {
+    public void loadPhotoDetailView(PhotoInfoBean photoDetailBean) {
         mRightTv.setText(photoDetailBean.attentionCount + "条评论");
     }
 

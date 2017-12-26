@@ -15,10 +15,12 @@ import dagger.Provides;
 @Module
 public class PhotoDetailModule {
 
+    private int mPhotoId;
     private PhotoDetailContract.View mView;
 
-    public PhotoDetailModule(PhotoDetailContract.View view) {
+    public PhotoDetailModule(PhotoDetailContract.View view,int photoId) {
         this.mView = view;
+        this.mPhotoId=photoId;
     }
     @Provides
     BaseQuickAdapter provideAdapter(){
@@ -27,6 +29,6 @@ public class PhotoDetailModule {
 
     @Provides
     IBasePresenter providePresenter() {
-        return new PhotoDetailPresenter(mView);
+        return new PhotoDetailPresenter(mView,mPhotoId);
     }
 }

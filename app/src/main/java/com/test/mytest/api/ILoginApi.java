@@ -1,6 +1,6 @@
 package com.test.mytest.api;
 
-import com.test.mytest.api.bean.UserBean;
+import com.test.mytest.api.bean.AccountBean;
 import com.test.mytest.api.response.BaseBeanRes;
 
 import java.util.Map;
@@ -15,5 +15,5 @@ import retrofit2.http.QueryMap;
 
 public interface ILoginApi {
     @GET("user/login")
-    Observable<BaseBeanRes<UserBean>> userLogin(@QueryMap Map<String, String> map);
+    Observable<BaseBeanRes<AccountBean>> userLogin(@QueryMap Map<String, String> map);
 }

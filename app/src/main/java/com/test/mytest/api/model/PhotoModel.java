@@ -2,10 +2,13 @@ package com.test.mytest.api.model;
 
 import com.test.mytest.api.IPhotoApi;
 import com.test.mytest.api.bean.PhotoInfoBean;
+import com.test.mytest.api.response.BaseBeanRes;
 import com.test.mytest.api.response.BaseListRes;
 import com.test.mytest.application.MyApp;
 import com.test.mytest.injector.components.DaggerApplicationComponent;
 import com.test.mytest.injector.module.ApplicationModule;
+
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -26,10 +29,15 @@ public class PhotoModel {
         DaggerApplicationComponent.builder().applicationModule(new ApplicationModule((MyApp) MyApp.getContext())).build().inject(this);
     }
 
-    public Observable<BaseListRes<PhotoInfoBean>> getMainPetPhotoList() {
-        return retrofit.create(IPhotoApi.class).getMainPetPhotoList()
+    public Observable<BaseListRes<PhotoInfoBean>> getMainPetPhotoList(int pageNum,int pageSize,String userId,String token,String type) {
+        return retrofit.create(IPhotoApi.class).getMainPetPhotoList(pageNum,pageSize,userId,token,type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
 
+    public Observable<BaseBeanRes<PhotoInfoBean>> getDetailPetPhoto(String userId,String token,int id){
+        return retrofit.create(IPhotoApi.class).getDetailPetPhoto(userId,token,id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

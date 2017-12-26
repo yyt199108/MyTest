@@ -1,17 +1,20 @@
 package com.test.mytest.module.login;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 
 import com.blankj.utilcode.utils.ToastUtils;
 import com.test.mytest.R;
-import com.test.mytest.api.bean.UserBean;
-import com.test.mytest.injector.components.DaggerLoginComponent;
-import com.test.mytest.injector.module.LoginModule;
+import com.test.mytest.api.bean.AccountBean;
 import com.test.mytest.module.base.BaseActivity;
+import com.test.mytest.module.home.HomeActivity;
+import com.test.mytest.utils.PrefUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+//import com.test.mytest.injector.components.DaggerLoginComponent;
 
 /**
  * Created by admin on 2017-12-25.
@@ -26,15 +29,18 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     protected void initInjector() {
-        DaggerLoginComponent.builder()
-                .applicationComponent(getApplicationComponent())
-                .loginModule(new LoginModule(this))
-                .build().inject(this);
+//        DaggerLoginComponent.builder()
+//                .applicationComponent(getApplicationComponent())
+//                .loginModule(new LoginModule(this))
+//                .build().inject(this);
+        mPresenter = new LoginPresenter(this);
     }
 
     @Override
     protected void initViews() {
-
+        if(PrefUtils.getUserInfo()!=null){
+            startActivity(new Intent(this, HomeActivity.class));
+        }
     }
 
     @Override
@@ -68,8 +74,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
-    public void loginSuccess(UserBean data) {
+    public void loginSuccess(AccountBean data) {
         ToastUtils.showLongToastSafe("登录成功");
+        startActivity(new Intent(this, HomeActivity.class));
     }
 
     @Override

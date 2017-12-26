@@ -79,7 +79,7 @@ public class PhotoListFragment extends BaseTakePhotoFragment<IBasePresenter> imp
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     //跳转到详情
-                    startActivity(new Intent(mContext, PhotoDetailActivity.class));
+                    PhotoDetailActivity.startPhotoDetailAct(getContext(), ((PhotoInfoBean) adapter.getItem(position)).id);
                 }
             });
         }

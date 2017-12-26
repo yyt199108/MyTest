@@ -1,13 +1,15 @@
 package com.test.mytest.module.login;
 
 import android.text.TextUtils;
-import android.widget.TextView;
 
-import com.test.mytest.api.bean.UserBean;
+import com.test.mytest.api.bean.AccountBean;
 import com.test.mytest.api.model.LoginModel;
 import com.test.mytest.api.response.BaseBeanRes;
+import com.test.mytest.utils.PrefUtils;
 
 import java.util.HashMap;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -21,6 +23,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     private LoginModel loginModel;
     private LoginContract.View mView;
 
+    @Inject
     public LoginPresenter(LoginContract.View view) {
         this.mView = view;
         loginModel = new LoginModel();
@@ -32,18 +35,19 @@ public class LoginPresenter implements LoginContract.Presenter {
         String password = mView.getPassword();
         if (!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(password)) {
             HashMap<String, String> map = new HashMap<>();
-            map.put("", phone);
-            map.put("", password);
+            map.put("phone", phone);
+            map.put("password", password);
             loginModel.userLogin(map)
-                    .subscribe(new Observer<BaseBeanRes<UserBean>>() {
+                    .subscribe(new Observer<BaseBeanRes<AccountBean>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
 
                         }
 
                         @Override
-                        public void onNext(BaseBeanRes<UserBean> userBeanBaseBeanRes) {
+                        public void onNext(BaseBeanRes<AccountBean> userBeanBaseBeanRes) {
                             if (userBeanBaseBeanRes != null && userBeanBaseBeanRes.data != null) {
+                                PrefUtils.saveUserInfo(userBeanBaseBeanRes.data);
                                 mView.loginSuccess(userBeanBaseBeanRes.data);
                             }
                         }

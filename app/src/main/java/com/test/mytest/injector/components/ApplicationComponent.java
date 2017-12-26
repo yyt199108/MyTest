@@ -18,7 +18,7 @@ import dagger.Component;
 @Singleton
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
-    IPhotoApi getIPhotoApi();
+//    IPhotoApi getIPhotoApi();
 
     Context getContext();
 

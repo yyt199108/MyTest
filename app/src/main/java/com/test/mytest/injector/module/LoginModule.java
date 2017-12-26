@@ -1,6 +1,7 @@
 package com.test.mytest.injector.module;
 
-import com.test.mytest.api.model.LoginModel;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.test.mytest.adapter.CommentListAdapter;
 import com.test.mytest.module.base.IBasePresenter;
 import com.test.mytest.module.login.LoginContract;
 import com.test.mytest.module.login.LoginPresenter;
@@ -19,8 +20,9 @@ public class LoginModule {
         this.mView=view;
     }
     @Provides
-    public IBasePresenter providePresenter(){
+    public IBasePresenter providerPresenter(){
         return new LoginPresenter(mView);
     }
+
 
 }

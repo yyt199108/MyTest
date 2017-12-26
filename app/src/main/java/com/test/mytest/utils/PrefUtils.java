@@ -46,9 +46,7 @@ public class PrefUtils {
     }
 
 
-
     public final static String USER_INFO = "userInfo";
-
 
 
     /**
@@ -57,6 +55,22 @@ public class PrefUtils {
     public static void saveUserInfo(AccountBean userInfo) {
         Gson gson = new Gson();
         setString(MyApp.getContext(), USER_INFO, gson.toJson(userInfo));
+    }
+
+    public static String getUserId() {
+        if (getUserInfo() != null) {
+            AccountBean userInfo = getUserInfo();
+            return String.valueOf(userInfo.id);
+        }
+        return null;
+    }
+
+    public static String getToken() {
+        if (getUserInfo() != null) {
+            AccountBean userInfo = getUserInfo();
+            return String.valueOf(userInfo.token);
+        }
+        return null;
     }
 
     /**
