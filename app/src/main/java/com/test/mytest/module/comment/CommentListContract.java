@@ -12,9 +12,10 @@ import java.util.List;
 
 public interface CommentListContract {
     interface View extends ILoadDataView<List<CommentBean>>{
-
+        void clearDefendantInfo();
+        void setDefendantInfo(String defendantId,String defendantNickName);
     }
     interface Presenter extends IBasePresenter{
-
+        void addComment(String photoId,String commentContent,String defendantId);
     }
 }

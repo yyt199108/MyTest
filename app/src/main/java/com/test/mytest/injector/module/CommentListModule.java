@@ -14,19 +14,23 @@ import dagger.Provides;
  */
 @Module
 public class CommentListModule {
+    private CommentListAdapter.OnCommentClickListener mListener;
+    private int mPhotoId;
     private CommentListContract.View mView;
 
-    public CommentListModule(CommentListContract.View view) {
+    public CommentListModule(CommentListContract.View view, int photoId, CommentListAdapter.OnCommentClickListener listener) {
         this.mView = view;
+        this.mPhotoId=photoId;
+        this.mListener=listener;
     }
 
     @Provides
-    BaseQuickAdapter provideAdapter() {
-        return new CommentListAdapter();
+    CommentListAdapter provideAdapter() {
+        return new CommentListAdapter(mListener);
     }
 
     @Provides
-    IBasePresenter providePresenter() {
-        return new CommentListPresenter(mView);
+    CommentListPresenter providePresenter() {
+        return new CommentListPresenter(mView,mPhotoId);
     }
 }

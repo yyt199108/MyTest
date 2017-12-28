@@ -1,7 +1,10 @@
 package com.test.mytest.module.base;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
@@ -10,12 +13,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.utils.DeviceUtils;
+import com.blankj.utilcode.utils.SizeUtils;
+import com.socks.library.KLog;
 import com.test.mytest.R;
 import com.test.mytest.application.MyApp;
 import com.test.mytest.injector.components.ApplicationComponent;
@@ -97,6 +104,32 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
                     updateViews(true);
                 }
             });
+        }
+    }
+
+    public boolean isSoftShowing() {
+        //获取当前屏幕内容的高度
+        int screenHeight = getWindow().getDecorView().getHeight();
+        //获取View可见区域的bottom
+        Rect rect = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+        KLog.e("height:" + (screenHeight - rect.bottom - getSoftBottomBarHeight()));
+        return screenHeight - rect.bottom - getSoftBottomBarHeight() != 0;
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private int getSoftBottomBarHeight() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        //这个方法获取可能不是真实屏幕的高度
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int usableHeight = metrics.heightPixels;
+        //获取当前屏幕的真实高度
+        getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+        int realHeight = metrics.heightPixels;
+        if (realHeight > usableHeight) {
+            return realHeight - usableHeight;
+        } else {
+            return 0;
         }
     }
 

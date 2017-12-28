@@ -19,8 +19,9 @@ public class LoginModule {
     public LoginModule(LoginContract.View view){
         this.mView=view;
     }
+
     @Provides
-    public IBasePresenter providerPresenter(){
+    public LoginPresenter providerPresenter(){
         return new LoginPresenter(mView);
     }
 

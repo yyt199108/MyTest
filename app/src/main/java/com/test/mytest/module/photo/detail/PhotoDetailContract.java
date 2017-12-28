@@ -34,6 +34,6 @@ public interface PhotoDetailContract {
     }
 
     interface Presenter extends IBasePresenter {
-
+        void getCommentList();
     }
 }

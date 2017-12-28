@@ -34,10 +34,10 @@ import io.reactivex.functions.Consumer;
 
 public class CommonBottomDialog {
     public interface AddCommentLisetener {
-        void addComment(String commentContent);
+        void addComment(String commentContent,String defendantId,String defendantNickName);
     }
 
-    public static void showAddCommentDialog(final Context context, final AddCommentLisetener lisetener) {
+    public static void showAddCommentDialog(final Context context, final AddCommentLisetener lisetener, final String defendantId, final String defendantNickName) {
         final BottomSheetDialog addCommentDialog = new BottomSheetDialog(context);
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.dialog_add_comment, null);
@@ -46,7 +46,7 @@ public class CommonBottomDialog {
             @Override
             public void onClick(View v) {
                 if (lisetener != null) {
-                    lisetener.addComment(etApplyComment.getText().toString());
+                    lisetener.addComment(etApplyComment.getText().toString(),defendantId,defendantNickName);
                 }
                 addCommentDialog.dismiss();
             }

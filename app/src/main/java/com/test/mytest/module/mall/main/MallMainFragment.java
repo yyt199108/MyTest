@@ -21,7 +21,7 @@ import butterknife.OnClick;
  * Created by admin on 2017-12-04.
  */
 
-public class MallMainFragment extends AgentWebFragment implements CommonBottomDialog.AddCommentLisetener {
+public class MallMainFragment extends AgentWebFragment  {
 
 //    public static String tbPath = "https://shop385121372.taobao.com/shop/view_shop.htm?shop_id=385121372";
     public static String tbPath = "https://shop385121372.m.taobao.com/?shop_id=385121372";
@@ -100,19 +100,5 @@ public class MallMainFragment extends AgentWebFragment implements CommonBottomDi
 
     }
 
-//    @OnClick({R.id.btn_test})
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.btn_test:
-//                CommonBottomDialog.showAddCommentDialog(getActivity(), this);
-//
-//                break;
-//        }
-//    }
-
-    @Override
-    public void addComment(String commentContent) {
-
-    }
 
 }

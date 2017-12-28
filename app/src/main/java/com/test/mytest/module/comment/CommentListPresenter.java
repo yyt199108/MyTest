@@ -1,15 +1,18 @@
 package com.test.mytest.module.comment;
 
+import android.text.TextUtils;
+
 import com.socks.library.KLog;
 import com.test.mytest.api.bean.CommentBean;
 import com.test.mytest.api.model.CommentModel;
 import com.test.mytest.api.response.BaseListRes;
+import com.test.mytest.api.response.BaseRes;
+import com.test.mytest.utils.PrefUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observer;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
@@ -21,37 +24,35 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class CommentListPresenter implements CommentListContract.Presenter {
+    private int mPhotoId;
     private CommentModel mModel;
     private CommentListContract.View mView;
 
-    public CommentListPresenter(CommentListContract.View view) {
+
+    public CommentListPresenter(CommentListContract.View view,int photoId) {
         this.mView = view;
+        this.mPhotoId=photoId;
         this.mModel = new CommentModel();
     }
+
+    int pageNum=1;
+    int pageSize=20;
 
     @Override
     public void getData(final boolean isRefresh) {
         if(!isRefresh){
             mView.showLoading();
         }
-        mModel.getPhotoDetailCommentList()
+        mModel.getPhotoDetailCommentList(mPhotoId, PrefUtils.getUserId(), PrefUtils.getToken(), pageNum, pageSize)
                 .compose(mView.bindLifecycle())
-                .subscribeOn(Schedulers.io())
-                .map(new Function<BaseListRes<CommentBean>, List<CommentBean>>() {
-                    @Override
-                    public List<CommentBean> apply(BaseListRes<CommentBean> commentBeanBaseListRes) throws Exception {
-//                        return commentBeanBaseListRes.data.dataList;
-                        return new ArrayList<CommentBean>();
-                    }
-                }).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<CommentBean>>() {
+                .subscribe(new Observer<BaseListRes<CommentBean>> () {
                     @Override
                     public void onSubscribe(Disposable d) {
                         KLog.e("dispose");
                     }
 
                     @Override
-                    public void onNext(List<CommentBean> commentBeanList) {
+                    public void onNext(BaseListRes<CommentBean> commentBeanBaseListRes) {
                         KLog.e("onNext");
 
                         if (isRefresh) {
@@ -59,24 +60,13 @@ public class CommentListPresenter implements CommentListContract.Presenter {
                         } else {
                             mView.hideLoading();
                         }
-                        List<CommentBean> list = new ArrayList<>();
-                        for(int i=0;i<11;i++) {
-                            CommentBean commentBean=new CommentBean();
-                            commentBean.createTime = (i+1)+"分钟前";
-                            commentBean.commentLocation = "北京/海淀";
-                            commentBean.nickName = "卡卡"+i;
-                            commentBean.commentContent = "拍照技术真不错"+i;
-                            commentBean.commentFavorCount = 22;
-                            if(i==0){
-                                commentBean.showCommentTypeTag=true;
-                                commentBean.commentTypeName = "热门评论";
-                            }if(i==3){
-                                commentBean.showCommentTypeTag=true;
-                                commentBean.commentTypeName = "最新评论";
-                            }
-                            list.add(commentBean);
+                        if(commentBeanBaseListRes.data.page.hasNextPage(pageNum)){
+                            pageNum++;
+                        }else{
+                            mView.hasNoMoreData();
                         }
-                        mView.loadData(list);
+
+                        mView.loadData(commentBeanBaseListRes.data.dataList);
                     }
 
                     @Override
@@ -95,5 +85,34 @@ public class CommentListPresenter implements CommentListContract.Presenter {
     public void getMoreData() {
 //        mView.hideLoading();
         mView.hasNoMoreData();
+    }
+
+    @Override
+    public void addComment(String photoId, String commentContent, String defendantId) {
+        if(TextUtils.isEmpty(defendantId)){
+            defendantId=null;
+        }
+        mModel.addComment(photoId,commentContent,defendantId,PrefUtils.getUserId(),PrefUtils.getToken())
+                .subscribe(new Observer<BaseRes>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRes baseRes) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

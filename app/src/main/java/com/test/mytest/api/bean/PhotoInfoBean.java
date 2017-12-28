@@ -71,13 +71,4 @@ public class PhotoInfoBean {
     public boolean like;
     public boolean collection;
     public List<String> imageUrlList;
-
-    //photoDetailBean
-    public String photoUrl;
-    public String petNick;
-    public String petId;
-    public String createTime;
-    public String doFavor;
-    public String detailContent;
-    public String attentionCount;
 }

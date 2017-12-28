@@ -23,7 +23,6 @@ public class LoginPresenter implements LoginContract.Presenter {
     private LoginModel loginModel;
     private LoginContract.View mView;
 
-    @Inject
     public LoginPresenter(LoginContract.View view) {
         this.mView = view;
         loginModel = new LoginModel();

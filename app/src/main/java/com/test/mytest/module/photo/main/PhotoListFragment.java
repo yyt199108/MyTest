@@ -70,7 +70,6 @@ public class PhotoListFragment extends BaseTakePhotoFragment<IBasePresenter> imp
             mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
                 @Override
                 public void onLoadMoreRequested() {
-                    page++;
                     mPresenter.getMoreData();
                 }
             }, mRecyView);
@@ -95,21 +94,14 @@ public class PhotoListFragment extends BaseTakePhotoFragment<IBasePresenter> imp
         mAdapter.setNewData(data);
     }
 
-    int page = 0;
-
     @Override
     public void loadMoreData(List<PhotoInfoBean> data) {
         mAdapter.addData(data);
-        if (page >= 3) {
-            mAdapter.loadMoreEnd();
-        } else {
-            mAdapter.loadMoreComplete();
-        }
+        mAdapter.loadMoreComplete();
     }
 
     @Override
     public void loadNoData() {
-
     }
 
     @Override

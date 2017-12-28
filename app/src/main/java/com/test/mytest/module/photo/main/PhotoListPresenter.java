@@ -25,7 +25,7 @@ public class PhotoListPresenter implements PhotoListContract.Presenter {
     private PhotoModel photoModel;
     private PhotoListContract.View mView;
 
-    private int mPage = 0;
+    private int mPage = 1;
     private int pageSize = 20;
 
     public PhotoListPresenter(PhotoListContract.View view) {

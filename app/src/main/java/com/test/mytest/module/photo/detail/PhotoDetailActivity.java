@@ -3,16 +3,31 @@ package com.test.mytest.module.photo.detail;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Animatable;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.blankj.utilcode.utils.DeviceUtils;
+import com.blankj.utilcode.utils.ScreenUtils;
+import com.blankj.utilcode.utils.SizeUtils;
+import com.blankj.utilcode.utils.TimeUtils;
 import com.blankj.utilcode.utils.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.image.ImageInfo;
+import com.socks.library.KLog;
 import com.test.mytest.R;
+import com.test.mytest.adapter.CommentListAdapter;
 import com.test.mytest.api.bean.CommentBean;
 import com.test.mytest.api.bean.PhotoDetailBean;
 import com.test.mytest.api.bean.PhotoInfoBean;
@@ -20,7 +35,10 @@ import com.test.mytest.injector.components.DaggerPhotoDetailComponent;
 import com.test.mytest.injector.module.PhotoDetailModule;
 import com.test.mytest.module.base.BaseActivity;
 import com.test.mytest.module.comment.CommentListActivity;
+import com.test.mytest.module.comment.CommentListContract;
+import com.test.mytest.module.comment.CommentListPresenter;
 import com.test.mytest.module.user.main.PetMainPageActivity;
+import com.test.mytest.utils.DateStringUtil;
 import com.test.mytest.widget.CommonBottomDialog;
 
 import java.util.List;
@@ -34,13 +52,13 @@ import butterknife.OnClick;
  * Created by admin on 2017-11-23.
  */
 
-public class PhotoDetailActivity extends BaseActivity implements PhotoDetailContract.View, CommonBottomDialog.AddCommentLisetener {
+public class PhotoDetailActivity extends BaseActivity<PhotoDetailContract.Presenter> implements PhotoDetailContract.View, CommonBottomDialog.AddCommentLisetener, BaseQuickAdapter.OnItemChildClickListener {
 
     private static final String TAG_PHOTO_ID = "tagPhotoId";
     private int tagPhotoId;
 
     @Inject
-    BaseQuickAdapter mAdapter;
+    CommentListAdapter mAdapter;
 
     @BindView(R.id.sdv_pet_head_photo)
     SimpleDraweeView mSdvPetHead;
@@ -54,10 +72,12 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
     SimpleDraweeView mSdvPhoto;
     @BindView(R.id.tv_like)
     TextView mTvLike;
+    @BindView(R.id.tv_create_time)
+    TextView mTvCreateTime;
 
 
-    public static void startPhotoDetailAct(Context context,int photoId){
-        Intent intent = new Intent(context,PhotoDetailActivity.class);
+    public static void startPhotoDetailAct(Context context, int photoId) {
+        Intent intent = new Intent(context, PhotoDetailActivity.class);
         intent.putExtra(TAG_PHOTO_ID, photoId);
         context.startActivity(intent);
     }
@@ -69,15 +89,15 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
 
     @Override
     protected void initInjector() {
+        tagPhotoId = getIntent().getIntExtra(TAG_PHOTO_ID, -1);
         DaggerPhotoDetailComponent.builder()
-                .photoDetailModule(new PhotoDetailModule(this,tagPhotoId))
+                .photoDetailModule(new PhotoDetailModule(this, tagPhotoId,null))
                 .build()
                 .inject(this);
     }
 
     @Override
     protected void initViews() {
-        tagPhotoId = getIntent().getIntExtra(TAG_PHOTO_ID,-1);
         initTitleView();
         initRecyView();
     }
@@ -101,11 +121,13 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
         mRecyView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mRecyView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mRecyView.setAdapter(mAdapter);
+        mAdapter.setOnItemChildClickListener(this);
     }
 
     @Override
     protected void updateViews(boolean isRefresh) {
         mPresenter.getData(isRefresh);
+        mPresenter.getCommentList();
     }
 
     @OnClick({R.id.tv_like, R.id.sdv_pet_head_photo, R.id.tv_pet_nick, R.id.tv_do_attention
@@ -139,7 +161,7 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
                 break;
             case R.id.tv_comment:
                 //评论
-                showAddCommentDialog();
+                showAddCommentDialog("","");
                 break;
             case R.id.tv_share:
                 //分享
@@ -157,14 +179,67 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
         }
     }
 
-    private void showAddCommentDialog() {
-        CommonBottomDialog.showAddCommentDialog(this, this);
+    private void showAddCommentDialog(String defendantId,String defendantNickName) {
+        CommonBottomDialog.showAddCommentDialog(this, this,defendantId,defendantNickName);
     }
 
+//    @BindView(R.id.tv_do_attention)
+//    TextView mTvAttention;
+
+    //    @BindView(R.id.tv_like)
+//    TextView mTvLike;
     @Override
     public void loadPhotoDetailView(PhotoInfoBean photoDetailBean) {
-        mRightTv.setText(photoDetailBean.attentionCount + "条评论");
+        if (photoDetailBean != null) {
+            mRightTv.setText(photoDetailBean.commentsNum + "条评论");
+            //头像
+            if (!TextUtils.isEmpty(photoDetailBean.avatar)) {
+                mSdvPetHead.setImageURI(photoDetailBean.avatar);
+            }
+            //发表时间
+            if (!TextUtils.isEmpty(photoDetailBean.gmtCreated)) {
+                mTvCreateTime.setText(DateStringUtil.getIntervalShort(TimeUtils.string2Date(photoDetailBean.gmtCreated)));
+            }
+            //昵称
+            if (!TextUtils.isEmpty(photoDetailBean.nickname)) {
+                mTvPetNick.setText(photoDetailBean.nickname);
+            }
+            //图像
+            if (photoDetailBean.imageUrlList != null && photoDetailBean.imageUrlList.size() > 0 && !TextUtils.isEmpty(photoDetailBean.imageUrlList.get(0))) {
+//                mSdvPhoto.setImageURI(photoDetailBean.imageUrlList.get(0));
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setUri(photoDetailBean.imageUrlList.get(0))
+                        .setControllerListener(listener)
+                        .build();
+                mSdvPhoto.setController(controller);
+            }
+            //内容
+            if (!TextUtils.isEmpty(photoDetailBean.content)) {
+                mTvPhotoContent.setText(photoDetailBean.content);
+            }
+        }
     }
+
+    void updateViewSize(@Nullable ImageInfo imageInfo) {
+        if (imageInfo != null) {
+            mSdvPhoto.getLayoutParams().width = ScreenUtils.getScreenWidth();
+            mSdvPhoto.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            mSdvPhoto.setAspectRatio((float) imageInfo.getWidth() / imageInfo.getHeight());
+        }
+    }
+
+    ControllerListener listener = new BaseControllerListener<ImageInfo>() {
+        @Override
+        public void onIntermediateImageSet(String id, @Nullable ImageInfo imageInfo) {
+            updateViewSize(imageInfo);
+        }
+
+        @Override
+        public void onFinalImageSet(String id, @Nullable ImageInfo imageInfo, @Nullable Animatable animatable) {
+            updateViewSize(imageInfo);
+        }
+    };
+
 
     @Override
     public void loadCommentListView(List<CommentBean> commentBeanList) {
@@ -184,13 +259,23 @@ public class PhotoDetailActivity extends BaseActivity implements PhotoDetailCont
     }
 
     private void startCommentListAct() {
-        CommentListActivity.startCommentListActivity(this, "1");
+        CommentListActivity.startCommentListActivity(this, tagPhotoId);
     }
 
     @Override
-    public void addComment(String commentContent) {
+    public void addComment(String commentContent, String defendantId, String defendantNickName) {
         ToastUtils.showLongToastSafe(commentContent);
-        CommentListActivity.startCommentListActivity(this, "1",commentContent);
+        CommentListActivity.startCommentListActivity(this, tagPhotoId, commentContent,defendantId,defendantNickName);
+    }
 
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        int id = view.getId();
+        switch (id){
+            //头像
+            case R.id.tv_pet_nick:
+                KLog.e("click item");
+                break;
+        }
     }
 }
