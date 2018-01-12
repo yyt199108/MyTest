@@ -2,9 +2,8 @@ package com.test.mytest.injector.components;
 
 import android.content.Context;
 
-import com.test.mytest.api.IPhotoApi;
 import com.test.mytest.api.model.CommentModel;
-import com.test.mytest.api.model.LoginModel;
+import com.test.mytest.api.model.UserModel;
 import com.test.mytest.api.model.PhotoModel;
 import com.test.mytest.injector.module.ApplicationModule;
 
@@ -26,5 +25,5 @@ public interface ApplicationComponent {
 
     void inject(CommentModel commentModel);
 
-    void inject(LoginModel loginModel);
+    void inject(UserModel userModel);
 }

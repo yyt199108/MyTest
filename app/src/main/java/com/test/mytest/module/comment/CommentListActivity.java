@@ -18,6 +18,7 @@ import com.test.mytest.api.bean.CommentBean;
 import com.test.mytest.injector.components.DaggerCommentListComponent;
 import com.test.mytest.injector.module.CommentListModule;
 import com.test.mytest.module.base.BaseActivity;
+import com.test.mytest.module.user.main.PetMainPageActivity;
 import com.test.mytest.utils.PrefUtils;
 
 import java.util.List;
@@ -203,8 +204,10 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         int id = view.getId();
         switch (id){
-            case R.id.tv_pet_nick://头像
+            case R.id.tv_pet_nick://昵称，头像
+            case R.id.sdv_avatar:
                 KLog.e("click item");
+                PetMainPageActivity.startMainAct(this, ((CommentBean)adapter.getItem(position)).userId);
                 break;
         }
     }

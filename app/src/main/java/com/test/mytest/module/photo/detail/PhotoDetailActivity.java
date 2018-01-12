@@ -56,6 +56,7 @@ public class PhotoDetailActivity extends BaseActivity<PhotoDetailContract.Presen
 
     private static final String TAG_PHOTO_ID = "tagPhotoId";
     private int tagPhotoId;
+    private String petUserId;
 
     @Inject
     CommentListAdapter mAdapter;
@@ -147,7 +148,7 @@ public class PhotoDetailActivity extends BaseActivity<PhotoDetailContract.Presen
             case R.id.sdv_pet_head_photo:
             case R.id.tv_pet_nick:
                 //点击头像和名称，跳到详情
-                PetMainPageActivity.startMainAct(this, "1");
+                PetMainPageActivity.startMainAct(this, petUserId);
                 break;
             case R.id.tv_do_attention:
                 //关注
@@ -196,6 +197,7 @@ public class PhotoDetailActivity extends BaseActivity<PhotoDetailContract.Presen
             if (!TextUtils.isEmpty(photoDetailBean.avatar)) {
                 mSdvPetHead.setImageURI(photoDetailBean.avatar);
             }
+            petUserId=String.valueOf(photoDetailBean.id);
             //发表时间
             if (!TextUtils.isEmpty(photoDetailBean.gmtCreated)) {
                 mTvCreateTime.setText(DateStringUtil.getIntervalShort(TimeUtils.string2Date(photoDetailBean.gmtCreated)));

@@ -35,6 +35,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/tv_pet_nick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/dp_10"
@@ -43,10 +44,12 @@
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:layout_width="@dimen/dp_20"
                     android:layout_height="@dimen/dp_20"
+                    android:id="@+id/sdv_gender"
                     fresco:actualImageResource="@drawable/ic_pet_male" />
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_pet_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_4"
@@ -54,6 +57,7 @@
                 android:textSize="@dimen/sp_12" />
 
             <TextView
+                android:id="@+id/tv_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -63,11 +67,11 @@
     </LinearLayout>
 
     <LinearLayout
-        android:padding="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
         android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:padding="@dimen/dp_10">
 
         <TextView
             android:layout_width="wrap_content"
@@ -75,22 +79,25 @@
             android:text="地区" />
 
         <TextView
-            android:layout_marginLeft="26dp"
+            android:id="@+id/tv_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="26dp"
             android:text="北京 大兴" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginRight="@dimen/dp_10"
-        android:background="@color/gray"/>
+        android:background="@color/gray" />
+
     <LinearLayout
-        android:padding="@dimen/dp_10"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/dp_10">
 
         <TextView
             android:layout_width="wrap_content"
@@ -99,34 +106,31 @@
             android:text="相册" />
 
         <com.facebook.drawee.view.SimpleDraweeView
-            android:layout_marginLeft="26dp"
             android:id="@+id/sdv_pet_photo1"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            fresco:actualImageResource="@drawable/ic_pet5"
-             />
+            android:layout_marginLeft="26dp"
+            fresco:actualImageResource="@drawable/ic_pet5" />
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sdv_pet_photo2"
-            android:layout_marginLeft="@dimen/dp_10"
-            fresco:actualImageResource="@drawable/ic_pet4"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            />
+            android:layout_marginLeft="@dimen/dp_10"
+            fresco:actualImageResource="@drawable/ic_pet4" />
 
         <com.facebook.drawee.view.SimpleDraweeView
-            android:layout_marginLeft="@dimen/dp_10"
-            fresco:actualImageResource="@drawable/ic_pet1"
             android:id="@+id/sdv_pet_photo3"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            />
+            android:layout_marginLeft="@dimen/dp_10"
+            fresco:actualImageResource="@drawable/ic_pet1" />
 
         <ImageView
-            android:layout_marginLeft="@dimen/dp_20"
-            android:src="@drawable/arrow_right"
-            android:padding="@dimen/dp_10"
             android:layout_width="30dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:padding="@dimen/dp_10"
+            android:src="@drawable/arrow_right" />
     </LinearLayout>
 </LinearLayout>

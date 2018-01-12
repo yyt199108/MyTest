@@ -102,5 +102,6 @@ public class CommentListAdapter extends BaseQuickAdapter<CommentBean, BaseViewHo
             ((SimpleDraweeView) helper.getView(R.id.sdv_avatar)).setImageURI(item.avatar);
         }
         helper.addOnClickListener(R.id.tv_pet_nick);
+        helper.addOnClickListener(R.id.sdv_avatar);
     }
 }

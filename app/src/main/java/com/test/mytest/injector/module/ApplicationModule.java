@@ -2,8 +2,6 @@ package com.test.mytest.injector.module;
 
 import android.content.Context;
 
-import com.test.mytest.api.ILoginApi;
-import com.test.mytest.api.IPhotoApi;
 import com.test.mytest.api.RetrofitService;
 import com.test.mytest.application.MyApp;
 
@@ -46,7 +44,7 @@ public class ApplicationModule {
 //
 //    @Singleton
 //    @Provides
-//    ILoginApi provideILoginApi(Retrofit retrofit){
-//        return retrofit.create(ILoginApi.class);
+//    IUserApi provideILoginApi(Retrofit retrofit){
+//        return retrofit.create(IUserApi.class);
 //    }
 }
