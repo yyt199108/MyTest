@@ -7,7 +7,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
+import com.blankj.utilcode.utils.DeviceUtils;
 import com.blankj.utilcode.utils.KeyboardUtils;
+import com.blankj.utilcode.utils.SizeUtils;
 import com.blankj.utilcode.utils.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.socks.library.KLog;
@@ -32,7 +34,7 @@ import butterknife.OnClick;
  * Created by yyt19 on 2017/11/28.
  */
 
-public class CommentListActivity extends BaseActivity<CommentListPresenter> implements CommentListContract.View, CommentListAdapter.OnCommentClickListener, BaseQuickAdapter.OnItemChildClickListener {
+public class CommentListActivity extends BaseActivity<CommentListPresenter> implements CommentListContract.View, CommentListAdapter.OnCommentClickListener, BaseQuickAdapter.OnItemChildClickListener, View.OnLayoutChangeListener {
     private static final String TAG_PHOTO_ID = "commentIdTag";
     private static final String TAG_COMMENT_CONTENT = "commentContentTag";
     private static final String TAG_DEFENDANT_NICK_NAME = "defendantNickName";
@@ -45,7 +47,9 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
     @Inject
     CommentListAdapter mAdapter;
 
-    public static void startCommentListActivity(Context fromContext, int photoId, String commentContent,String defendantId,String defendantNickName) {
+    private int keyHeight=0;
+
+    public static void startCommentListActivity(Context fromContext, int photoId, String commentContent, String defendantId, String defendantNickName) {
         Intent intent = new Intent(fromContext, CommentListActivity.class);
         intent.putExtra(TAG_PHOTO_ID, photoId);
         intent.putExtra(TAG_COMMENT_CONTENT, commentContent);
@@ -67,17 +71,22 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
 
     @Override
     protected void initInjector() {
-        mPhotoId=getIntent().getIntExtra(TAG_PHOTO_ID, -1);
+        mPhotoId = getIntent().getIntExtra(TAG_PHOTO_ID, -1);
         DaggerCommentListComponent.builder()
-                .commentListModule(new CommentListModule(this,mPhotoId,this))
+                .commentListModule(new CommentListModule(this, mPhotoId, this))
                 .build()
                 .inject(this);
     }
+
+    @BindView(R.id.rootView)
+    View rootView;
 
     @Override
     protected void initViews() {
         initTitleView();
         initRec();
+        keyHeight= getWindowManager().getDefaultDisplay().getHeight()/3;
+        rootView.addOnLayoutChangeListener(this);
     }
 
     private void initRec() {
@@ -108,18 +117,21 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
         mPresenter.getData(isRefresh);
     }
 
+    private boolean addComment = true;//首次进入
+
     @Override
     public void loadData(List<CommentBean> data) {
         mAdapter.setNewData(data);
-        if(getIntent().hasExtra(TAG_COMMENT_CONTENT)&& !TextUtils.isEmpty(getIntent().getStringExtra(TAG_COMMENT_CONTENT))){
+        if (addComment && getIntent().hasExtra(TAG_COMMENT_CONTENT) && !TextUtils.isEmpty(getIntent().getStringExtra(TAG_COMMENT_CONTENT))) {
+            addComment = false;
             String commentContent = getIntent().getStringExtra(TAG_COMMENT_CONTENT);
             String defendantId = getIntent().getStringExtra(TAG_DEFENDANT_ID);
             String defendantNickName = getIntent().getStringExtra(TAG_DEFENDANT_NICK_NAME);
-            adapterAddComment(commentContent,defendantId,defendantNickName);
+            adapterAddComment(commentContent, defendantId, defendantNickName);
         }
     }
 
-    private void adapterAddComment(String commentContent,String defendantId,String defendantNickName){
+    private void adapterAddComment(String commentContent, String defendantId, String defendantNickName) {
 //        CommentBean commentBean=(CommentBean)mAdapter.getItem(3);
 //        commentBean.showCommentTypeTag=false;
 //        commentBean.commentTypeName = "最新评论";
@@ -136,8 +148,11 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
 //        newComment.createTime = "刚刚";
 //        mAdapter.addData(3,newComment);
 //        mAdapter.notifyItemChanged(4);
-
-        mPresenter.addComment(String.valueOf(mPhotoId),commentContent,defendantId);
+        if (!TextUtils.isEmpty(commentContent)) {
+            mPresenter.addComment(String.valueOf(mPhotoId), commentContent, defendantId);
+        }else {
+            ToastUtils.showShortToast("评论内容不能为空");
+        }
     }
 
     @Override
@@ -158,14 +173,14 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
     @BindView(R.id.et_apply_comment)
     EditText mEtComment;
 
-    @OnClick({R.id.back_img_lay,R.id.tv_apply})
-    public void onClick(View view){
-        switch (view.getId()){
+    @OnClick({R.id.back_img_lay, R.id.tv_apply})
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.back_img_lay:
                 finish();
                 break;
             case R.id.tv_apply:
-                adapterAddComment(mEtComment.getText().toString(),mDefendantId,mDefendantName);
+                adapterAddComment(mEtComment.getText().toString(), mDefendantId, mDefendantName);
                 mEtComment.setText("");
                 break;
         }
@@ -173,29 +188,30 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
 
     @Override
     public void onClickDefendant(String defendantId, String defendtantNickName) {
-        ToastUtils.showLongToastSafe(defendantId+","+defendtantNickName);
+        ToastUtils.showLongToastSafe(defendantId + "," + defendtantNickName);
     }
 
     @Override
     public void onClickComment(String commentUserId, String commentUserNickName) {
-        setDefendantInfo(commentUserId,commentUserNickName);
+        setDefendantInfo(commentUserId, commentUserNickName);
     }
 
     @Override
     public void clearDefendantInfo() {
-        mDefendantId=null;
-        mDefendantName=null;
+        mDefendantId = null;
+        mDefendantName = null;
+        mEtComment.setHint("发表评论");
     }
 
     @Override
     public void setDefendantInfo(String defendantId, String defendantNickName) {
-        mDefendantId=defendantId;
-        mDefendantName=defendantNickName;
-        mEtComment.setHint("@"+mDefendantName);
+        mDefendantId = defendantId;
+        mDefendantName = defendantNickName;
+        mEtComment.setHint("@" + mDefendantName);
         mEtComment.setFocusableInTouchMode(true);
         mEtComment.setFocusable(true);
         mEtComment.requestFocus();
-        if(!isSoftShowing()) {
+        if (!isSoftShowing()) {
             KeyboardUtils.showSoftInput(mEtComment);
         }
     }
@@ -203,12 +219,23 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         int id = view.getId();
-        switch (id){
+        switch (id) {
             case R.id.tv_pet_nick://昵称，头像
             case R.id.sdv_avatar:
                 KLog.e("click item");
-                PetMainPageActivity.startMainAct(this, ((CommentBean)adapter.getItem(position)).userId);
+                PetMainPageActivity.startMainAct(this, ((CommentBean) adapter.getItem(position)).userId);
                 break;
         }
+    }
+
+    @Override
+    public void onLayoutChange(View v, int left, int top, int right,
+                               int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+        if ((oldBottom != 0 && bottom != 0 && (bottom - oldBottom > keyHeight))) {
+            //收起
+            clearDefendantInfo();
+            mEtComment.setText("");
+        }
+
     }
 }
