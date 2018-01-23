@@ -19,6 +19,9 @@ public interface LoginContract {
     }
 
     interface Presenter extends IBasePresenter {
+        //账号密码登录
         void userLogin();
+        //第三方登录
+        void thirdLogin(String platUserAvatar,String platUserNickname,String thirdPlatUserId,String gender,int thirdPlatType);
     }
 }

@@ -12,4 +12,8 @@
     <string name="camera">相册</string>
     <string name="goto_taobao_title">跳转到淘宝</string>
     <string name="goto_taobao">检查到您已安装淘宝客户端，是否跳转到淘宝客户端？</string>
+
+    <string name="auth_lg_wb">微博登录</string>
+    <string name="auth_lg_qq">QQ登录</string>
+    <string name="auth_lg_wx">微信登录</string>
 </resources>

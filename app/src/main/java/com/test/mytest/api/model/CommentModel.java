@@ -3,6 +3,9 @@ package com.test.mytest.api.model;
 import com.test.mytest.api.ICommentApi;
 import com.test.mytest.api.bean.AccountBean;
 import com.test.mytest.api.bean.CommentBean;
+import com.test.mytest.api.exception.HttpResponseFunc;
+import com.test.mytest.api.exception.ServerResponseFun;
+import com.test.mytest.api.response.BaseBeanRes;
 import com.test.mytest.api.response.BaseListRes;
 import com.test.mytest.api.response.BaseRes;
 import com.test.mytest.application.MyApp;
@@ -34,13 +37,19 @@ public class CommentModel {
         return retrofit.create(ICommentApi.class)
                 .getPhotoDetailCommentList(photoId,userId,token,pageNum,pageSize)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                //拦截服务器返回的错误
+                .map(new ServerResponseFun<BaseListRes<CommentBean>>())
+                .onErrorResumeNext(new HttpResponseFunc());
     }
 
-    public Observable<BaseRes> addComment(String photoId, String commentContent, String defendantId, String userId, String token){
+    public Observable<BaseBeanRes<CommentBean>> addComment(String photoId, String commentContent, String defendantId, String userId, String token){
         return retrofit.create(ICommentApi.class)
                 .addComment(photoId, commentContent, defendantId, userId, token)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                //拦截服务器返回的错误
+                .map(new ServerResponseFun<BaseBeanRes<CommentBean>>())
+                .onErrorResumeNext(new HttpResponseFunc());
     }
 }

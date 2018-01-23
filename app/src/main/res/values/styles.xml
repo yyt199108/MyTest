@@ -23,4 +23,20 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <!--第三方登录按钮-->
+    <style name="auth_login_button">
+        <item name="android:layout_width">@dimen/auth_login_width</item>
+        <item name="android:layout_height">@dimen/auth_login_height</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginBottom">31dp</item>
+    </style>
+    <!--第三方登录字体-->
+    <style name="auth_login_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/mid_text_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:drawablePadding">13dp</item>
+    </style>
 </resources>

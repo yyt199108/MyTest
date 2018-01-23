@@ -3,6 +3,7 @@ package com.test.mytest.api;
 import com.test.mytest.api.bean.PhotoInfoBean;
 import com.test.mytest.api.response.BaseBeanRes;
 import com.test.mytest.api.response.BaseListRes;
+import com.test.mytest.api.response.BaseRes;
 
 import java.util.Map;
 
@@ -27,4 +28,6 @@ public interface IPhotoApi {
     Observable<BaseBeanRes<PhotoInfoBean>> getDetailPetPhoto(@Query("userId") String userId,
                                                              @Query("token") String token,
                                                              @Query("id") int id);
+    @GET("like")
+    Observable<BaseRes> like(@QueryMap Map<String, String> map);
 }

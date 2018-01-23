@@ -23,4 +23,8 @@ public interface IUserApi {
     Observable<BaseBeanRes<AccountBean>> getUserInfo( @Query("userId") String userId,
                                      @Query("token") String token,
                                      @Query("id") String id);
+
+    //第三方登录
+    @GET("user/thirdLogin")
+    Observable<BaseBeanRes<AccountBean>> thirdLogin(@QueryMap Map<String, String> map);
 }

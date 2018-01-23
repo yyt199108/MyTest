@@ -76,6 +76,9 @@ public class PhotoDetailActivity extends BaseActivity<PhotoDetailContract.Presen
     @BindView(R.id.tv_create_time)
     TextView mTvCreateTime;
 
+    private int mPhotoId;
+    private int mCreateUserId;
+
 
     public static void startPhotoDetailAct(Context context, int photoId) {
         Intent intent = new Intent(context, PhotoDetailActivity.class);
@@ -136,14 +139,7 @@ public class PhotoDetailActivity extends BaseActivity<PhotoDetailContract.Presen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_like:
-                //点赞
-                if (mTvLike.getText().toString().equals(getString(R.string.liked))) {
-                    mTvLike.setText(getString(R.string.already_liked));
-                    mTvLike.setTextColor(ContextCompat.getColor(this, R.color.gray));
-                } else {
-                    mTvLike.setText(getString(R.string.liked));
-                    mTvLike.setTextColor(ContextCompat.getColor(this, R.color.black));
-                }
+                mPresenter.like(String.valueOf(mPhotoId),String.valueOf(mCreateUserId));
                 break;
             case R.id.sdv_pet_head_photo:
             case R.id.tv_pet_nick:
@@ -192,6 +188,8 @@ public class PhotoDetailActivity extends BaseActivity<PhotoDetailContract.Presen
     @Override
     public void loadPhotoDetailView(PhotoInfoBean photoDetailBean) {
         if (photoDetailBean != null) {
+            mPhotoId=photoDetailBean.id;
+            mCreateUserId=photoDetailBean.userId;
             mRightTv.setText(photoDetailBean.commentsNum + "条评论");
             //头像
             if (!TextUtils.isEmpty(photoDetailBean.avatar)) {
@@ -219,7 +217,22 @@ public class PhotoDetailActivity extends BaseActivity<PhotoDetailContract.Presen
             if (!TextUtils.isEmpty(photoDetailBean.content)) {
                 mTvPhotoContent.setText(photoDetailBean.content);
             }
+            //点赞
+            mTvLike.setText(photoDetailBean.like?getString(R.string.already_liked):getString(R.string.liked));
         }
+    }
+
+    @Override
+    public void likeSuccess() {
+        //点赞
+        if (mTvLike.getText().toString().equals(getString(R.string.liked))) {
+            mTvLike.setText(getString(R.string.already_liked));
+            mTvLike.setTextColor(ContextCompat.getColor(this, R.color.gray));
+        }
+//        else {
+//            mTvLike.setText(getString(R.string.liked));
+//            mTvLike.setTextColor(ContextCompat.getColor(this, R.color.black));
+//        }
     }
 
     void updateViewSize(@Nullable ImageInfo imageInfo) {

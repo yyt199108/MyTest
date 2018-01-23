@@ -2,6 +2,7 @@ package com.test.mytest.application;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 import com.blankj.utilcode.utils.Utils;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -9,12 +10,28 @@ import com.test.mytest.api.RetrofitService;
 import com.test.mytest.injector.components.ApplicationComponent;
 import com.test.mytest.injector.components.DaggerApplicationComponent;
 import com.test.mytest.injector.module.ApplicationModule;
+import com.umeng.socialize.Config;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 
 /**
  * Created by yyt19 on 2017/11/22.
  */
 
 public class MyApp extends Application {
+
+    {
+        Config.DEBUG = true;
+//        PlatformConfig.setWeixin("","");
+////        PlatformConfig.setWeixin("11111","11111");
+//        PlatformConfig.setQQZone("2222","22222");
+////        PlatformConfig.setSinaWeibo("","","");
+
+        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+        //豆瓣RENREN平台目前只能在服务器端配置
+        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com");
+        PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
+    }
 
     public static Context mContext;
 
@@ -52,6 +69,15 @@ public class MyApp extends Application {
         Utils.init(this);
 
         Fresco.initialize(this);
+
+        UMShareAPI.get(this);
+
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public static Context getContext() {

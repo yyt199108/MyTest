@@ -15,7 +15,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
+        android:background="#3ccc"
         android:padding="@dimen/dp_10">
 
         <EditText
@@ -27,12 +28,16 @@
             android:hint="发表评论"
             android:paddingLeft="@dimen/dp_10"
             android:textColorHint="#9f000000" />
+        <!--focusableInTouchMode-->
 
         <TextView
             android:id="@+id/tv_apply"
+            android:focusable="true"
+            android:focusableInTouchMode="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="#cccc"
             android:padding="@dimen/dp_10"
             android:text="发表" />
     </LinearLayout>

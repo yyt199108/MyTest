@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.utils.DeviceUtils;
 import com.blankj.utilcode.utils.SizeUtils;
+import com.blankj.utilcode.utils.ToastUtils;
 import com.socks.library.KLog;
 import com.test.mytest.R;
 import com.test.mytest.application.MyApp;
@@ -189,6 +191,13 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
         if (mEmptyLayout != null) {
             mEmptyLayout.setEmptyStatus(EmptyLayout.STATUS_NO_NET);
             mEmptyLayout.setRetryListener(this);
+        }
+    }
+
+    @Override
+    public void showServerError(String message) {
+        if(!TextUtils.isEmpty(message)) {
+            ToastUtils.showShortToast(message);
         }
     }
 

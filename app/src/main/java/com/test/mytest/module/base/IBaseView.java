@@ -20,6 +20,12 @@ public interface IBaseView {
      * 显示网络错误，modify 对网络异常在 BaseActivity 和 BaseFragment 统一处理
      */
     void showNetError();
+
+    /**
+     * 服务器返回异常
+     * @param message
+     */
+    void showServerError(String message);
     /**
      * 完成刷新, 新增控制刷新
      */

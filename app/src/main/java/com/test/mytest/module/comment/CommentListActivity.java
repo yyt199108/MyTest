@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.blankj.utilcode.utils.DeviceUtils;
 import com.blankj.utilcode.utils.KeyboardUtils;
+import com.blankj.utilcode.utils.LogUtils;
 import com.blankj.utilcode.utils.SizeUtils;
 import com.blankj.utilcode.utils.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -34,7 +37,7 @@ import butterknife.OnClick;
  * Created by yyt19 on 2017/11/28.
  */
 
-public class CommentListActivity extends BaseActivity<CommentListPresenter> implements CommentListContract.View, CommentListAdapter.OnCommentClickListener, BaseQuickAdapter.OnItemChildClickListener, View.OnLayoutChangeListener {
+public class CommentListActivity extends BaseActivity<CommentListPresenter> implements CommentListContract.View, CommentListAdapter.OnCommentClickListener, BaseQuickAdapter.OnItemChildClickListener, View.OnLayoutChangeListener, View.OnTouchListener {
     private static final String TAG_PHOTO_ID = "commentIdTag";
     private static final String TAG_COMMENT_CONTENT = "commentContentTag";
     private static final String TAG_DEFENDANT_NICK_NAME = "defendantNickName";
@@ -47,7 +50,7 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
     @Inject
     CommentListAdapter mAdapter;
 
-    private int keyHeight=0;
+    private int keyHeight = 0;
 
     public static void startCommentListActivity(Context fromContext, int photoId, String commentContent, String defendantId, String defendantNickName) {
         Intent intent = new Intent(fromContext, CommentListActivity.class);
@@ -81,12 +84,17 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
     @BindView(R.id.rootView)
     View rootView;
 
+    @BindView(R.id.tv_apply)
+    View mTvApply;
+
     @Override
     protected void initViews() {
         initTitleView();
         initRec();
-        keyHeight= getWindowManager().getDefaultDisplay().getHeight()/3;
+        keyHeight = getWindowManager().getDefaultDisplay().getHeight() / 3;
         rootView.addOnLayoutChangeListener(this);
+
+        mTvApply.setOnTouchListener(this);
     }
 
     private void initRec() {
@@ -131,8 +139,13 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
         }
     }
 
-    private void adapterAddComment(String commentContent, String defendantId, String defendantNickName) {
-//        CommentBean commentBean=(CommentBean)mAdapter.getItem(3);
+    @Override
+    public void addComment(CommentBean data) {
+        mAdapter.addData(0, data);
+        mAdapter.notifyDataSetChanged();
+
+        mEtComment.setText("");
+        //CommentBean commentBean=(CommentBean)mAdapter.getItem(3);
 //        commentBean.showCommentTypeTag=false;
 //        commentBean.commentTypeName = "最新评论";
 //
@@ -148,9 +161,13 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
 //        newComment.createTime = "刚刚";
 //        mAdapter.addData(3,newComment);
 //        mAdapter.notifyItemChanged(4);
+    }
+
+    private void adapterAddComment(String commentContent, String defendantId, String defendantNickName) {
+
         if (!TextUtils.isEmpty(commentContent)) {
             mPresenter.addComment(String.valueOf(mPhotoId), commentContent, defendantId);
-        }else {
+        } else {
             ToastUtils.showShortToast("评论内容不能为空");
         }
     }
@@ -180,10 +197,21 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
                 finish();
                 break;
             case R.id.tv_apply:
-                adapterAddComment(mEtComment.getText().toString(), mDefendantId, mDefendantName);
-                mEtComment.setText("");
+//                adapterAddComment(mEtComment.getText().toString(), mDefendantId, mDefendantName);
+//                mEtComment.setText("");
                 break;
         }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (v.getId() == R.id.tv_apply) {
+                adapterAddComment(mEtComment.getText().toString(), mDefendantId, mDefendantName);
+                mEtComment.setText("");
+            }
+        }
+        return false;
     }
 
     @Override
@@ -234,7 +262,6 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
         if ((oldBottom != 0 && bottom != 0 && (bottom - oldBottom > keyHeight))) {
             //收起
             clearDefendantInfo();
-            mEtComment.setText("");
         }
 
     }

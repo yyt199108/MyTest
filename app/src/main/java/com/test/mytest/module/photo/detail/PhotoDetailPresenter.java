@@ -1,16 +1,22 @@
 package com.test.mytest.module.photo.detail;
 
+import com.blankj.utilcode.utils.DeviceUtils;
+import com.blankj.utilcode.utils.NetworkUtils;
 import com.test.mytest.api.bean.CommentBean;
 import com.test.mytest.api.bean.PhotoDetailBean;
 import com.test.mytest.api.bean.PhotoInfoBean;
+import com.test.mytest.api.exception.ApiException;
 import com.test.mytest.api.model.CommentModel;
 import com.test.mytest.api.model.PhotoModel;
 import com.test.mytest.api.response.BaseBeanRes;
 import com.test.mytest.api.response.BaseListRes;
+import com.test.mytest.api.response.BaseRes;
 import com.test.mytest.utils.PrefUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -54,7 +60,11 @@ public class PhotoDetailPresenter implements PhotoDetailContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        if (e instanceof ApiException) {
+                            mView.showServerError(((ApiException) e).message);
+                        } else {
+                            mView.showServerError(e.getMessage());
+                        }
                     }
 
                     @Override
@@ -116,7 +126,46 @@ public class PhotoDetailPresenter implements PhotoDetailContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        if (e instanceof ApiException) {
+                            mView.showServerError(((ApiException) e).message);
+                        } else {
+                            mView.showServerError(e.getMessage());
+                        }
+                    }
 
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void like(String jokesId, String jokeCreaterId) {
+        Map<String, String> map = new HashMap<>();
+        map.put("jokesId", jokesId);
+        map.put("jokeCreaterId", jokeCreaterId);
+        map.put("category", "2");
+        map.put("ip", NetworkUtils.getIPAddress(true));
+        mPhotoModel.like(map)
+                .subscribe(new Observer<BaseRes>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(BaseRes baseRes) {
+                        mView.likeSuccess();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e instanceof ApiException) {
+                            mView.showServerError(((ApiException) e).message);
+                        } else {
+                            mView.showServerError(e.getMessage());
+                        }
                     }
 
                     @Override

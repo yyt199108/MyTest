@@ -31,9 +31,16 @@ public interface PhotoDetailContract {
          * 显示查看更多评论
          */
         void showLookMoreComment();
+
+        /**
+         * 点赞
+         */
+        void likeSuccess();
     }
 
     interface Presenter extends IBasePresenter {
         void getCommentList();
+
+        void like(String jokesId,String jokeCreaterId);
     }
 }

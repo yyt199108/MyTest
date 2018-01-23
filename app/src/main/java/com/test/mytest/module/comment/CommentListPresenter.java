@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.socks.library.KLog;
 import com.test.mytest.api.bean.CommentBean;
 import com.test.mytest.api.model.CommentModel;
+import com.test.mytest.api.response.BaseBeanRes;
 import com.test.mytest.api.response.BaseListRes;
 import com.test.mytest.api.response.BaseRes;
 import com.test.mytest.utils.PrefUtils;
@@ -93,15 +94,15 @@ public class CommentListPresenter implements CommentListContract.Presenter {
             defendantId=null;
         }
         mModel.addComment(photoId,commentContent,defendantId,PrefUtils.getUserId(),PrefUtils.getToken())
-                .subscribe(new Observer<BaseRes>() {
+                .subscribe(new Observer<BaseBeanRes<CommentBean>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(BaseRes baseRes) {
-
+                    public void onNext(BaseBeanRes<CommentBean> baseRes) {
+                        mView.addComment(baseRes.data);
                     }
 
                     @Override

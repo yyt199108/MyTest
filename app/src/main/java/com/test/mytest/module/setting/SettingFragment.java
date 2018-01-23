@@ -69,11 +69,14 @@ public class SettingFragment extends BaseTakePhotoFragment implements CommonBott
         initTitleView();
         accountBean = PrefUtils.getUserInfo();
         if (accountBean != null) {
-            mStvName.setRightString(TextUtils.isEmpty(accountBean.petName) ? "" : accountBean.petName);
-            mStvAge.setRightString(TextUtils.isEmpty(accountBean.petAge) ? "" : accountBean.petAge);
-            mStvGender.setRightString(TextUtils.isEmpty(accountBean.petGender) ? "" : accountBean.petGender);
+            mStvName.setRightString(TextUtils.isEmpty(accountBean.nickname) ? "" : accountBean.nickname);
+            mStvAge.setRightString(String.valueOf(accountBean.age));
+            mStvGender.setRightString(TextUtils.isEmpty(accountBean.gender) ? "" : accountBean.gender);
             mStvType.setRightString(TextUtils.isEmpty(accountBean.petType) ? "" : accountBean.petType);
             mStvLocation.setRightString(TextUtils.isEmpty(accountBean.location) ? "" : accountBean.location);
+            if (!TextUtils.isEmpty(accountBean.avatar)) {
+                mSdvPetHeadPhoto.setImageURI(accountBean.avatar);
+            }
         } else {
             accountBean = new AccountBean();
         }
@@ -116,7 +119,7 @@ public class SettingFragment extends BaseTakePhotoFragment implements CommonBott
 
                     @Override
                     public void onLocationChanged(Location location) {
-                        mLocationAddr=LocationUtils.getLocality(location.getLatitude(),location.getLongitude() );
+                        mLocationAddr = LocationUtils.getLocality(location.getLatitude(), location.getLongitude());
                     }
 
                     @Override
@@ -125,7 +128,7 @@ public class SettingFragment extends BaseTakePhotoFragment implements CommonBott
                     }
                 });
                 rightString = mStvAge.getRightString();
-                rightString=mLocationAddr;
+                rightString = mLocationAddr;
                 CommonBottomDialog.showEditTextDialog(mContext, TYPE_AGE, TextUtils.isEmpty(rightString) ? "修改年龄" : rightString, "修改年龄", this);
                 break;
             case R.id.stv_type:

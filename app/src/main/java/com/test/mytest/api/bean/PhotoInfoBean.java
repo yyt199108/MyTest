@@ -40,8 +40,9 @@ public class PhotoInfoBean {
      * collection : false
      */
     private Random random=new Random();
-    public float height=random.nextInt(20)+50;
+//    public float height=random.nextInt(20)+50;
     public float width= (float) (Math.random()*100+50);
+    public float height=width+(10-random.nextInt(20));
     @DrawableRes
     public int resId;
     public String infoName;

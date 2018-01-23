@@ -2,8 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_vertical"
     android:orientation="vertical">
-
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     <EditText
         android:id="@+id/et_login_phone"
         android:layout_width="match_parent"
@@ -21,4 +26,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="登录" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/login_wx"
+
+        style="@style/auth_login_button"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="61dp"
+        android:background="@drawable/login_background"
+        android:clickable="true">
+
+        <TextView
+            style="@style/auth_login_text"
+            android:drawableLeft="@drawable/login_icon_wechat_selector"
+            android:text="@string/auth_lg_wx" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/login_qq"
+        style="@style/auth_login_button"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/login_background"
+        android:clickable="true">
+
+        <TextView
+            style="@style/auth_login_text"
+            android:drawableLeft="@drawable/login_icon_qq_selector"
+            android:text="@string/auth_lg_qq" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/login_wb"
+
+        style="@style/auth_login_button"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/login_background"
+        android:clickable="true">
+
+        <TextView
+            style="@style/auth_login_text"
+            android:drawableLeft="@drawable/login_icon_microblog_selector"
+            android:text="@string/auth_lg_wb" />
+    </LinearLayout>
 </LinearLayout>

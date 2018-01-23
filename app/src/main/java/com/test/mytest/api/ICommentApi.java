@@ -2,8 +2,10 @@ package com.test.mytest.api;
 
 import com.test.mytest.api.bean.CommentBean;
 import com.test.mytest.api.bean.PhotoInfoBean;
+import com.test.mytest.api.response.BaseBeanRes;
 import com.test.mytest.api.response.BaseListRes;
 import com.test.mytest.api.response.BaseRes;
+import com.umeng.socialize.sina.message.BaseResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -22,9 +24,9 @@ public interface ICommentApi {
                                                                    @Query("pageSize") int pageSize);
 
     @GET("jokes/comment")
-    Observable<BaseRes> addComment(@Query("jokesId") String photoId,
-                                   @Query("content") String content,
-                                   @Query("defendantId") String defendantId,
-                                   @Query("userId") String userId,
-                                   @Query("token") String token);
+    Observable<BaseBeanRes<CommentBean>> addComment(@Query("jokesId") String photoId,
+                                                    @Query("content") String content,
+                                                    @Query("defendantId") String defendantId,
+                                                    @Query("userId") String userId,
+                                                    @Query("token") String token);
 }

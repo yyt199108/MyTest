@@ -11,4 +11,8 @@
     <dimen name="dp_20">20dp</dimen>
     <dimen name="red_button_padding">2dp</dimen>
     <dimen name="red_button_radius">2dp</dimen>
+
+    <!--第三方登录控件的宽高-->
+    <dimen name="auth_login_width">268dp</dimen>
+    <dimen name="auth_login_height">45dp</dimen>
 </resources>

@@ -7,11 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.blankj.utilcode.utils.ToastUtils;
 import com.test.mytest.R;
 import com.test.mytest.application.MyApp;
 import com.test.mytest.injector.components.ApplicationComponent;
@@ -157,7 +159,12 @@ public abstract class BaseFragment<T extends IBasePresenter> extends SupportFrag
             mEmptyLayout.setRetryListener(this);
         }
     }
-
+    @Override
+    public void showServerError(String message) {
+        if(!TextUtils.isEmpty(message)) {
+            ToastUtils.showShortToast(message);
+        }
+    }
     /**
      * 完成刷新, 新增控制刷新
      */
