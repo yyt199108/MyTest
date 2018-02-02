@@ -43,7 +43,8 @@ public class EmptyLayout extends FrameLayout {
     @BindView(R.id.rl_empty_container)
     View mRlEmptyContainer;
     @BindView(R.id.empty_loading)
-    SpinKitView mEmptyLoading;
+//    SpinKitView mEmptyLoading;
+    View mEmptyLoading;
     @BindView(R.id.empty_layout)
     FrameLayout mEmptyLayout;
 
@@ -134,7 +135,7 @@ public class EmptyLayout extends FrameLayout {
     }
 
     public void setLoadingIcon(Sprite d) {
-        mEmptyLoading.setIndeterminateDrawable(d);
+//        mEmptyLoading.setIndeterminateDrawable(d);
     }
 
     public void setRetryListener(OnRetryListener retryListener) {

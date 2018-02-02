@@ -87,15 +87,31 @@ public class PetMainPageActivity extends BaseActivity<PetInfoPresenter> implemen
 
     @Override
     public void showPetInfo(AccountBean data) {
-        if(data!=null) {
-            if(!TextUtils.isEmpty(data.avatar)) {
+        if (data != null) {
+            if (!TextUtils.isEmpty(data.avatar)) {
                 sdvPetAvatar.setImageURI(data.avatar);
             }
-            if(!TextUtils.isEmpty(data.nickname)){
+            if (!TextUtils.isEmpty(data.nickname)) {
                 mTvPetNick.setText(data.nickname);
             }
-            if(!TextUtils.isEmpty(data.gender)){
-                sdvPetGender.setImageResource(TextUtils.equals(data.gender,"男")?R.drawable.ic_pet_male:R.drawable.ic_favor);
+            if (!TextUtils.isEmpty(data.gender)) {
+                if(TextUtils.equals(data.gender,"女")||TextUtils.equals(data.gender,"2")){
+                    sdvPetGender.setImageResource(R.drawable.woman);
+                }else if(TextUtils.equals(data.gender,"男")||TextUtils.equals(data.gender,"1")){
+                    sdvPetGender.setImageResource(R.drawable.man);
+                }else{
+                    sdvPetGender.setImageResource(R.drawable.ic_pet_male);
+                }
+            }
+
+            if (!TextUtils.isEmpty(data.province) || !TextUtils.isEmpty(data.city) || !TextUtils.isEmpty(data.county) || !TextUtils.isEmpty(data.address)) {
+                mTvAddress.setText(TextUtils.isEmpty(data.province) ? "" : data.province + " "
+                        + (TextUtils.isEmpty(data.city) ? "" : data.city) + " "
+                        + (TextUtils.isEmpty(data.county) ? "" : data.county) + " "
+                        + (TextUtils.isEmpty(data.address) ? "" : data.address));
+            }
+            if (!TextUtils.isEmpty(String.valueOf(data.age))) {
+                mTvPetAge.setText("年龄："+String.valueOf(data.age));
             }
         }
     }

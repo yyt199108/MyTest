@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.socks.library.KLog;
 import com.test.mytest.api.bean.CommentBean;
+import com.test.mytest.api.exception.ApiException;
 import com.test.mytest.api.model.CommentModel;
 import com.test.mytest.api.response.BaseBeanRes;
 import com.test.mytest.api.response.BaseListRes;
@@ -30,23 +31,26 @@ public class CommentListPresenter implements CommentListContract.Presenter {
     private CommentListContract.View mView;
 
 
-    public CommentListPresenter(CommentListContract.View view,int photoId) {
+    public CommentListPresenter(CommentListContract.View view, int photoId) {
         this.mView = view;
-        this.mPhotoId=photoId;
+        this.mPhotoId = photoId;
         this.mModel = new CommentModel();
     }
 
-    int pageNum=1;
-    int pageSize=20;
+    int pageNum = 1;
+    int pageSize = 20;
+
+    boolean hasNoMore;
 
     @Override
     public void getData(final boolean isRefresh) {
-        if(!isRefresh){
+        if (!isRefresh) {
             mView.showLoading();
         }
+        pageNum = 1;
         mModel.getPhotoDetailCommentList(mPhotoId, PrefUtils.getUserId(), PrefUtils.getToken(), pageNum, pageSize)
                 .compose(mView.bindLifecycle())
-                .subscribe(new Observer<BaseListRes<CommentBean>> () {
+                .subscribe(new Observer<BaseListRes<CommentBean>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         KLog.e("dispose");
@@ -61,10 +65,12 @@ public class CommentListPresenter implements CommentListContract.Presenter {
                         } else {
                             mView.hideLoading();
                         }
-                        if(commentBeanBaseListRes.data.page.hasNextPage(pageNum)){
+                        if (commentBeanBaseListRes.data.page.hasNextPage(pageNum)) {
                             pageNum++;
-                        }else{
+                            hasNoMore = false;
+                        } else {
                             mView.hasNoMoreData();
+                            hasNoMore = true;
                         }
 
                         mView.loadData(commentBeanBaseListRes.data.dataList);
@@ -72,7 +78,16 @@ public class CommentListPresenter implements CommentListContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        KLog.e("error "+e.getMessage());
+                        if (e instanceof ApiException) {
+                            if (((ApiException) e).code == 213) {
+                                //登录过期
+                                mView.loginTokenOut();
+                            } else {
+                                mView.showServerError(((ApiException) e).message);
+                            }
+                        } else {
+                            mView.showServerError(e.getMessage());
+                        }
                     }
 
                     @Override
@@ -84,16 +99,58 @@ public class CommentListPresenter implements CommentListContract.Presenter {
 
     @Override
     public void getMoreData() {
-//        mView.hideLoading();
-        mView.hasNoMoreData();
+
+        if (!hasNoMore) {
+            mModel.getPhotoDetailCommentList(mPhotoId, PrefUtils.getUserId(), PrefUtils.getToken(), pageNum, pageSize)
+                    .compose(mView.bindLifecycle())
+                    .subscribe(new Observer<BaseListRes<CommentBean>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            KLog.e("dispose");
+                        }
+
+                        @Override
+                        public void onNext(BaseListRes<CommentBean> commentBeanBaseListRes) {
+                            KLog.e("onNext");
+                            mView.loadMoreData(commentBeanBaseListRes.data.dataList);
+                            if (commentBeanBaseListRes.data.page != null && commentBeanBaseListRes.data.page.hasNextPage(pageNum)) {
+                                pageNum++;
+                            } else {
+                                mView.hasNoMoreData();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if (e instanceof ApiException) {
+                                if (((ApiException) e).code == 213) {
+                                    //登录过期
+                                    mView.loginTokenOut();
+                                } else {
+                                    mView.showServerError(((ApiException) e).message);
+                                }
+                            } else {
+                                mView.showServerError(e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            KLog.e("complete");
+                        }
+                    });
+        } else {
+            mView.hideLoading();
+            mView.hasNoMoreData();
+        }
     }
 
     @Override
     public void addComment(String photoId, String commentContent, String defendantId) {
-        if(TextUtils.isEmpty(defendantId)){
-            defendantId=null;
+        if (TextUtils.isEmpty(defendantId)) {
+            defendantId = null;
         }
-        mModel.addComment(photoId,commentContent,defendantId,PrefUtils.getUserId(),PrefUtils.getToken())
+        mModel.addComment(photoId, commentContent, defendantId, PrefUtils.getUserId(), PrefUtils.getToken())
                 .subscribe(new Observer<BaseBeanRes<CommentBean>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -107,7 +164,16 @@ public class CommentListPresenter implements CommentListContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        if (e instanceof ApiException) {
+                            if (((ApiException) e).code == 213) {
+                                //登录过期
+                                mView.loginTokenOut();
+                            } else {
+                                mView.showServerError(((ApiException) e).message);
+                            }
+                        } else {
+                            mView.showServerError(e.getMessage());
+                        }
                     }
 
                     @Override

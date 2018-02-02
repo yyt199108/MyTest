@@ -61,7 +61,12 @@ public class PhotoDetailPresenter implements PhotoDetailContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         if (e instanceof ApiException) {
-                            mView.showServerError(((ApiException) e).message);
+                            if(((ApiException) e).code==213){
+                                //登录过期
+                                mView.loginTokenOut();
+                            }else {
+                                mView.showServerError(((ApiException) e).message);
+                            }
                         } else {
                             mView.showServerError(e.getMessage());
                         }
@@ -127,7 +132,12 @@ public class PhotoDetailPresenter implements PhotoDetailContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         if (e instanceof ApiException) {
-                            mView.showServerError(((ApiException) e).message);
+                            if(((ApiException) e).code==213){
+                                //登录过期
+                                mView.loginTokenOut();
+                            }else {
+                                mView.showServerError(((ApiException) e).message);
+                            }
                         } else {
                             mView.showServerError(e.getMessage());
                         }
@@ -146,6 +156,8 @@ public class PhotoDetailPresenter implements PhotoDetailContract.Presenter {
         map.put("jokesId", jokesId);
         map.put("jokeCreaterId", jokeCreaterId);
         map.put("category", "2");
+        map.put("userId", PrefUtils.getUserId());
+        map.put("token",  PrefUtils.getToken());
         map.put("ip", NetworkUtils.getIPAddress(true));
         mPhotoModel.like(map)
                 .subscribe(new Observer<BaseRes>() {
@@ -162,7 +174,12 @@ public class PhotoDetailPresenter implements PhotoDetailContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         if (e instanceof ApiException) {
-                            mView.showServerError(((ApiException) e).message);
+                            if(((ApiException) e).code==213){
+                                //登录过期
+                                mView.loginTokenOut();
+                            }else {
+                                mView.showServerError(((ApiException) e).message);
+                            }
                         } else {
                             mView.showServerError(e.getMessage());
                         }

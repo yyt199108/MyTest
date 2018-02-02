@@ -8,6 +8,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -27,4 +28,8 @@ public interface IUserApi {
     //第三方登录
     @GET("user/thirdLogin")
     Observable<BaseBeanRes<AccountBean>> thirdLogin(@QueryMap Map<String, String> map);
+
+    //修改信息
+    @POST("user/modifyUserInfo")
+    Observable<BaseRes> modifyUserInfo(@QueryMap Map<String, String> map);
 }

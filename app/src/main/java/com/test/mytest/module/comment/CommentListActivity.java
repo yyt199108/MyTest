@@ -106,7 +106,6 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
             mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
                 @Override
                 public void onLoadMoreRequested() {
-                    page++;
                     mPresenter.getMoreData();
                 }
             }, mRecyView);
@@ -174,7 +173,8 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
 
     @Override
     public void loadMoreData(List<CommentBean> data) {
-
+        mAdapter.addData(data);
+        mAdapter.loadMoreComplete();
     }
 
     @Override
@@ -216,7 +216,8 @@ public class CommentListActivity extends BaseActivity<CommentListPresenter> impl
 
     @Override
     public void onClickDefendant(String defendantId, String defendtantNickName) {
-        ToastUtils.showLongToastSafe(defendantId + "," + defendtantNickName);
+//        ToastUtils.showLongToastSafe(defendantId + "," + defendtantNickName);
+        PetMainPageActivity.startMainAct(this, defendantId);
     }
 
     @Override

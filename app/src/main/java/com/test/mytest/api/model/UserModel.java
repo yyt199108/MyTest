@@ -5,6 +5,7 @@ import com.test.mytest.api.bean.AccountBean;
 import com.test.mytest.api.exception.HttpResponseFunc;
 import com.test.mytest.api.exception.ServerResponseFun;
 import com.test.mytest.api.response.BaseBeanRes;
+import com.test.mytest.api.response.BaseRes;
 import com.test.mytest.application.MyApp;
 import com.test.mytest.injector.components.DaggerApplicationComponent;
 import com.test.mytest.injector.module.ApplicationModule;
@@ -57,5 +58,14 @@ public class UserModel {
                 .map(new ServerResponseFun<BaseBeanRes<AccountBean>>())
                 .onErrorResumeNext(new HttpResponseFunc());
 
+    }
+
+    public Observable<BaseRes> modifyUserInfo(Map<String, String> map) {
+        return retrofit.create(IUserApi.class).modifyUserInfo(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                //拦截服务器返回的错误
+                .map(new ServerResponseFun<BaseRes>())
+                .onErrorResumeNext(new HttpResponseFunc());
     }
 }

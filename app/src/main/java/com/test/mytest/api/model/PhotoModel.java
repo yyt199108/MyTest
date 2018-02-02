@@ -36,7 +36,10 @@ public class PhotoModel {
     public Observable<BaseListRes<PhotoInfoBean>> getMainPetPhotoList(int pageNum,int pageSize,String userId,String token,String type) {
         return retrofit.create(IPhotoApi.class).getMainPetPhotoList(pageNum,pageSize,userId,token,type)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                //拦截服务器返回的错误
+                .map(new ServerResponseFun<BaseListRes<PhotoInfoBean>>())
+                .onErrorResumeNext(new HttpResponseFunc());
     }
 
     public Observable<BaseBeanRes<PhotoInfoBean>> getDetailPetPhoto(String userId,String token,int id){

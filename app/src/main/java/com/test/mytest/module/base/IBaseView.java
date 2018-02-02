@@ -26,6 +26,11 @@ public interface IBaseView {
      * @param message
      */
     void showServerError(String message);
+
+    /**
+     * 登录过期
+     */
+    void loginTokenOut();
     /**
      * 完成刷新, 新增控制刷新
      */

@@ -1,7 +1,10 @@
 package com.test.mytest.module.base;
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.os.Build;
@@ -12,6 +15,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -28,6 +32,8 @@ import com.socks.library.KLog;
 import com.test.mytest.R;
 import com.test.mytest.application.MyApp;
 import com.test.mytest.injector.components.ApplicationComponent;
+import com.test.mytest.module.login.LoginActivity;
+import com.test.mytest.utils.PrefUtils;
 import com.test.mytest.utils.SwipeRefreshHelper;
 import com.test.mytest.widget.EmptyLayout;
 import com.trello.rxlifecycle2.LifecycleProvider;
@@ -196,9 +202,27 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
 
     @Override
     public void showServerError(String message) {
-        if(!TextUtils.isEmpty(message)) {
+        if (!TextUtils.isEmpty(message)) {
             ToastUtils.showShortToast(message);
         }
+    }
+
+    @Override
+    public void loginTokenOut() {
+        new AlertDialog.Builder(this)
+                .setTitle("登录过期")
+                .setMessage("用户登录过期，请重新登录")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PrefUtils.clearAll();
+                        MyApp.clearAct();
+                        startActivity(new Intent(BaseActivity.this, LoginActivity.class));
+                    }
+                })
+                .setCancelable(false)
+                .create()
+                .show();
     }
 
     /**
@@ -261,6 +285,8 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
         initViews();
         initSwipeRefresh();
         updateViews(false);
+
+        MyApp.add(this);
     }
 
     @Override
@@ -296,6 +322,7 @@ public abstract class BaseActivity<T extends IBasePresenter> extends SupportActi
     protected void onDestroy() {
         lifecycleSubject.onNext(ActivityEvent.DESTROY);
         super.onDestroy();
+        MyApp.remove(this);
     }
 
     private ArrayList<MyTouchListener> myTouchListenerList = new ArrayList<>();

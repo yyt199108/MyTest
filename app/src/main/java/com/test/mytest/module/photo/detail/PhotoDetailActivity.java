@@ -195,7 +195,7 @@ public class PhotoDetailActivity extends BaseActivity<PhotoDetailContract.Presen
             if (!TextUtils.isEmpty(photoDetailBean.avatar)) {
                 mSdvPetHead.setImageURI(photoDetailBean.avatar);
             }
-            petUserId=String.valueOf(photoDetailBean.id);
+            petUserId=String.valueOf(photoDetailBean.userId);
             //发表时间
             if (!TextUtils.isEmpty(photoDetailBean.gmtCreated)) {
                 mTvCreateTime.setText(DateStringUtil.getIntervalShort(TimeUtils.string2Date(photoDetailBean.gmtCreated)));

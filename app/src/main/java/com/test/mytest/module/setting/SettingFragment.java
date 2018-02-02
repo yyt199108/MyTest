@@ -8,13 +8,17 @@ import android.view.View;
 
 import com.allen.library.SuperTextView;
 import com.blankj.utilcode.utils.LocationUtils;
+import com.blankj.utilcode.utils.ToastUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jph.takephoto.model.TResult;
 import com.test.mytest.R;
 import com.test.mytest.api.bean.AccountBean;
+import com.test.mytest.injector.components.DaggerSettingComponent;
+import com.test.mytest.injector.module.SettingModule;
 import com.test.mytest.module.base.BaseFragment;
 import com.test.mytest.module.base.BaseTakePhotoActivity;
 import com.test.mytest.module.base.BaseTakePhotoFragment;
+import com.test.mytest.module.base.IBasePresenter;
 import com.test.mytest.utils.CustomTakePhotoHelper;
 import com.test.mytest.utils.PrefUtils;
 import com.test.mytest.widget.CommonBottomDialog;
@@ -26,7 +30,7 @@ import butterknife.OnClick;
  * Created by admin on 2017-11-27.
  */
 
-public class SettingFragment extends BaseTakePhotoFragment implements CommonBottomDialog.EditLisetener {
+public class SettingFragment extends BaseTakePhotoFragment<SettingPresenter> implements CommonBottomDialog.EditLisetener, SettingContract.View {
 
     private static final int TYPE_NAME = 1;
     private static final int TYPE_LOCATION = 2;
@@ -47,6 +51,8 @@ public class SettingFragment extends BaseTakePhotoFragment implements CommonBott
     private AccountBean accountBean;
     private String mLocationAddr;
 
+    private SettingPresenter settingPre;
+
     public static SettingFragment newInstance() {
         SettingFragment fragment = new SettingFragment();
         Bundle bundle = new Bundle();
@@ -61,7 +67,12 @@ public class SettingFragment extends BaseTakePhotoFragment implements CommonBott
 
     @Override
     protected void initInjector() {
-
+        DaggerSettingComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .settingModule(new SettingModule(this))
+                .build()
+                .inject(this);
+        settingPre=(SettingPresenter)mPresenter;
     }
 
     @Override
@@ -107,28 +118,28 @@ public class SettingFragment extends BaseTakePhotoFragment implements CommonBott
                 CommonBottomDialog.showEditTextDialog(mContext, TYPE_NAME, TextUtils.isEmpty(rightString) ? "修改名字" : rightString, "修改名字", this);
                 break;
             case R.id.stv_location:
+//                LocationUtils.register(100, 100, new LocationUtils.OnLocationChangeListener() {
+//                    @Override
+//                    public void getLastKnownLocation(Location location) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onLocationChanged(Location location) {
+//                        mLocationAddr = LocationUtils.getLocality(location.getLatitude(), location.getLongitude());
+//                    }
+//
+//                    @Override
+//                    public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//                    }
+//                });
                 rightString = mStvLocation.getRightString();
+//                rightString = mLocationAddr;
                 CommonBottomDialog.showEditTextDialog(mContext, TYPE_LOCATION, TextUtils.isEmpty(rightString) ? "修改地址" : rightString, "修改地址", this);
                 break;
             case R.id.stv_age:
-                LocationUtils.register(100, 100, new LocationUtils.OnLocationChangeListener() {
-                    @Override
-                    public void getLastKnownLocation(Location location) {
-
-                    }
-
-                    @Override
-                    public void onLocationChanged(Location location) {
-                        mLocationAddr = LocationUtils.getLocality(location.getLatitude(), location.getLongitude());
-                    }
-
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                    }
-                });
                 rightString = mStvAge.getRightString();
-                rightString = mLocationAddr;
                 CommonBottomDialog.showEditTextDialog(mContext, TYPE_AGE, TextUtils.isEmpty(rightString) ? "修改年龄" : rightString, "修改年龄", this);
                 break;
             case R.id.stv_type:
@@ -151,12 +162,41 @@ public class SettingFragment extends BaseTakePhotoFragment implements CommonBott
         mSdvPetHeadPhoto.setImageURI(Uri.parse("file://" + result.getImage().getCompressPath()));
     }
 
+    int modifyType;
+    String editTextString;
     @Override
     public void editComplete(String editTextString, int type) {
+        this.editTextString=editTextString;
+        modifyType=type;
         switch (type) {
+            case TYPE_NAME:
+                settingPre.modifyInfo(null,null,editTextString);
+                break;
+            case TYPE_AGE:
+                settingPre.modifyInfo(editTextString,null,null);
+                break;
+            case TYPE_LOCATION:
+                mStvLocation.setRightString(editTextString);
+                accountBean.location = editTextString;
+                break;
+            case TYPE_GENDER:
+                settingPre.modifyInfo(null,editTextString,null);
+                break;
+            case TYPE_TYPE:
+                mStvType.setRightString(editTextString);
+                accountBean.petType = editTextString;
+                break;
+        }
+    }
+
+    @Override
+    public void modifySuccess() {
+        ToastUtils.showShortToast("修改成功");
+        switch (modifyType){
             case TYPE_NAME:
                 mStvName.setRightString(editTextString);
                 accountBean.petName = editTextString;
+                settingPre.modifyInfo(null,null,editTextString);
                 break;
             case TYPE_AGE:
                 mStvAge.setRightString(editTextString);

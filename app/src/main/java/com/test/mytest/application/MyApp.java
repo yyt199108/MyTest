@@ -1,5 +1,6 @@
 package com.test.mytest.application;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
@@ -10,9 +11,13 @@ import com.test.mytest.api.RetrofitService;
 import com.test.mytest.injector.components.ApplicationComponent;
 import com.test.mytest.injector.components.DaggerApplicationComponent;
 import com.test.mytest.injector.module.ApplicationModule;
+import com.test.mytest.module.base.BaseActivity;
+import com.test.mytest.module.base.IBasePresenter;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
+
+import java.util.LinkedList;
 
 /**
  * Created by yyt19 on 2017/11/22.
@@ -29,7 +34,7 @@ public class MyApp extends Application {
 
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         //豆瓣RENREN平台目前只能在服务器端配置
-        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad","http://sns.whalecloud.com");
+        PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad", "http://sns.whalecloud.com");
         PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
     }
 
@@ -60,7 +65,7 @@ public class MyApp extends Application {
                 .build();
     }
 
-    public static ApplicationComponent getApplicationComponent(){
+    public static ApplicationComponent getApplicationComponent() {
         return mApplicationComponent;
     }
 
@@ -82,5 +87,23 @@ public class MyApp extends Application {
 
     public static Context getContext() {
         return mContext;
+    }
+
+    private static LinkedList<Activity> activities = new LinkedList<>();
+
+    public static void add(Activity activity) {
+        activities.add(activity);
+    }
+
+    public static void remove(Activity activity) {
+        activities.remove(activity);
+    }
+
+    public static void clearAct() {
+        for (Activity activity : activities) {
+            if (activity != null) {
+                activity.finish();
+            }
+        }
     }
 }

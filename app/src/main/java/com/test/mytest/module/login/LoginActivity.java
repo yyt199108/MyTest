@@ -124,7 +124,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
 
-            Toast.makeText(mContext, "成功了", Toast.LENGTH_LONG).show();
             mPresenter.thirdLogin(data.get("iconurl"),data.get("name"),data.get("uid"),data.get("gender"),getPlatType(platform));
 
         }

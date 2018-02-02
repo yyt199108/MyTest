@@ -93,7 +93,7 @@
         </activity>
         <activity android:name=".module.photo.detail.PhotoDetailActivity"/>
         <activity android:name=".module.comment.CommentListActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize"/>
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".module.user.main.PetMainPageActivity"/>
         <activity android:name=".module.login.LoginActivity">
             <intent-filter>

@@ -1,11 +1,14 @@
 package com.test.mytest.module.base;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,6 +20,8 @@ import com.blankj.utilcode.utils.ToastUtils;
 import com.test.mytest.R;
 import com.test.mytest.application.MyApp;
 import com.test.mytest.injector.components.ApplicationComponent;
+import com.test.mytest.module.login.LoginActivity;
+import com.test.mytest.utils.PrefUtils;
 import com.test.mytest.utils.SwipeRefreshHelper;
 import com.test.mytest.widget.EmptyLayout;
 import com.trello.rxlifecycle2.LifecycleProvider;
@@ -165,6 +170,24 @@ public abstract class BaseFragment<T extends IBasePresenter> extends SupportFrag
             ToastUtils.showShortToast(message);
         }
     }
+    @Override
+    public void loginTokenOut() {
+        new AlertDialog.Builder(getActivity())
+                .setTitle("登录过期")
+                .setMessage("用户登录过期，请重新登录")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PrefUtils.clearAll();
+                        MyApp.clearAct();
+                        startActivity(new Intent(getActivity(),LoginActivity.class));
+                    }
+                })
+                .setCancelable(false)
+                .create()
+                .show();
+    }
+
     /**
      * 完成刷新, 新增控制刷新
      */

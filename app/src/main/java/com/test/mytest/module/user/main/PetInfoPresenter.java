@@ -1,6 +1,7 @@
 package com.test.mytest.module.user.main;
 
 import com.test.mytest.api.bean.AccountBean;
+import com.test.mytest.api.exception.ApiException;
 import com.test.mytest.api.model.UserModel;
 import com.test.mytest.api.response.BaseBeanRes;
 import com.test.mytest.api.response.BaseRes;
@@ -54,7 +55,16 @@ public class PetInfoPresenter implements PetInfoContract.Presenter {
 
             @Override
             public void onError(Throwable e) {
-
+                if (e instanceof ApiException) {
+                    if(((ApiException) e).code==213){
+                        //登录过期
+                        mView.loginTokenOut();
+                    }else {
+                        mView.showServerError(((ApiException) e).message);
+                    }
+                } else {
+                    mView.showServerError(e.getMessage());
+                }
             }
 
             @Override
